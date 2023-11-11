@@ -1,0 +1,20 @@
+@startuml use_case_Scarabeo
+left to right direction
+actor "User" as u
+
+rectangle Client{
+    usecase "Insert a word" as UC1
+    usecase "Confirm word" as UC2
+
+}
+u --> UC1
+u --> UC2
+rectangle Server{
+    usecase "Add it to game matrix" as US1
+    usecase "Calculate points" as US2
+}
+
+UC1 <--> US1
+UC2 <--> US2
+
+@enduml
