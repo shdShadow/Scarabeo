@@ -13,5 +13,7 @@ public class app {
     for (letter letter : tmp) {
         System.out.println(letter.toString());
     }
+    matrice3x3 matrice = new matrice3x3();
+        matrice.stampaMatrice();
   }
 }
