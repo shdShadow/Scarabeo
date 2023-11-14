@@ -1,0 +1,258 @@
+        //il punto di domanda mistico ;
+        
+        
+        DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+        DocumentBuilder b = f.newDocumentBuilder();
+        Document d= b.newDocument();
+       
+        Element radice = d.createElement("persone");
+        d.appendChild(radice);
+
+
+
+        Element persona = d.createElement("persona");
+        radice.appendChild(persona);
+
+        Element elementoNome = d.createElement("nome");
+        elementoNome.appendChild(d.createTextNode("MARIO"));
+        persona.appendChild(elementoNome);
+
+        Element elementoCognome = d.createElement("cognome");
+        elementoCognome.appendChild(d.createTextNode("ROSSI"));
+        persona.appendChild(elementoCognome);
+
+       
+        //SALVA SU STRINGA
+        // Creare un oggetto Transformer per la trasformazione in stringa
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        //transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        StringWriter writer = new StringWriter();
+        transformer.transform(new DOMSource(d), new StreamResult(writer));
+        String xmlString = writer.toString();
+
+        System.out.println(xmlString);
+
+
+
+        //SALVA SU FILE
+        TransformerFactory transformerFactory2 = TransformerFactory.newInstance();
+        Transformer transformer2 = transformerFactory2.newTransformer();
+        transformer2.setOutputProperty(OutputKeys.INDENT, "yes");
+        StreamResult result = new StreamResult(new File("dati_demo.xml"));
+        transformer2.transform(new DOMSource(d), result);vs
+
+
+        public class fileManager {
+    public void printToXml(ArrayList<persona> list) throws ParserConfigurationException, TransformerException {
+        DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+        DocumentBuilder b = f.newDocumentBuilder();
+        Document d = b.newDocument();
+
+        Element radice = d.createElement("Rubrica");
+        d.appendChild(radice);
+
+        for (persona p : list) {
+            Element persona = d.createElement("persona");
+            radice.appendChild(persona);
+            Element elementoNome = d.createElement("nome");
+            elementoNome.appendChild(d.createTextNode(p.getNome()));
+            persona.appendChild(elementoNome);
+
+            Element elementoCognome = d.createElement("cognome");
+            elementoCognome.appendChild(d.createTextNode(p.getCognome()));
+            persona.appendChild(elementoCognome);
+
+            Element elementoNumero = d.createElement("numero");
+            elementoNumero.appendChild(d.createTextNode(p.getNumero()));
+            persona.appendChild(elementoNumero);
+
+            Element elementoAnno = d.createElement("anno");
+            elementoAnno.appendChild(d.createTextNode(p.getAnno().toString()));
+            persona.appendChild(elementoAnno);
+        }
+
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        StreamResult result = new StreamResult(new File("dati.xml"));
+        transformer.transform(new DOMSource(d), result);
+
+    }
+
+        public ArrayList<persona> readXml(String file_path) throws SAXException, IOException, ParserConfigurationException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document document = builder.parse(file_path);
+
+        // Ottieni la radice del documento
+        Element rubrica = document.getDocumentElement();
+
+        // Ottieni una lista di tutti gli elementi "persona"
+        NodeList persone = rubrica.getElementsByTagName("persona");
+        ArrayList<persona> list = new ArrayList<>();
+        // Itera attraverso gli elementi "persona" e stampa i dati
+        for (int i = 0; i < persone.getLength(); i++) {
+            Element persona = (Element) persone.item(i);
+            //nomi degli attributi della classe
+            String nome = persona.getElementsByTagName("nome").item(0).getTextContent();
+            String cognome = persona.getElementsByTagName("cognome").item(0).getTextContent();
+            String numero = persona.getElementsByTagName("numero").item(0).getTextContent();
+            Integer anno = Integer.parseInt(persona.getElementsByTagName("anno").item(0).getTextContent());
+            persona p = new persona(nome, cognome, numero, anno);
+            list.add(p);
+        }
+        return list;
+
+    }
+
+
+        public static void main(String[] args)
+            throws ParserConfigurationException, TransformerException, SAXException, IOException {
+        fileManager fm = new fileManager();
+        DatagramSocket socket = new DatagramSocket(666);
+        byte[] buffer = new byte[1500];
+        while (true) {
+            DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+            socket.receive(packet);
+            int clientPort = packet.getPort();
+            InetAddress clientAddress = packet.getAddress();
+            String messaggio = new String(packet.getData(), 0, packet.getLength(), StandardCharsets.UTF_8);
+            String strippedMessage = messaggio.replace("\0", "");
+            String messaggioDaInviare = "";
+
+           //Inserisci codice qui
+
+            Charset charset = Charset.forName("UTF-8");
+            byte[] sendBuffer = messaggioDaInviare.getBytes(charset);
+            packet = new DatagramPacket(sendBuffer, sendBuffer.length);
+            packet.setAddress(clientAddress);
+            packet.setPort(clientPort);
+            socket.send(packet);
+        }
+    }
+
+public String readFileNoParsing(String file_path) throws IOException{
+
+        BufferedReader br = new BufferedReader(new FileReader(file_path));
+        String line;
+        StringBuilder xmlContent = new StringBuilder();
+        while((line = br.readLine())!=null){
+            xmlContent.append(line);
+        }
+        br.close();
+        return xmlContent.toString();
+    }
+
+
+
+
+
+    c#######
+
+//Serializzare un oggetto
+//Serializza un solo oggetto
+//Le stringhe devono essere settate a " " perchè sennò crea un tag autochiudente
+//Il serialize deve essere nella stessa classe da serializzare per l'invio
+     public string serialize()
+    {
+        XmlSerializer x = new XmlSerializer(this.GetType());
+        StringWriter sww = new StringWriter();
+        XmlWriter writer = XmlWriter.Create(sww);
+        x.Serialize(writer, this);
+        return sww.ToString();
+    }
+
+        //Deserializzare un oggetto
+        
+    XmlDocument xmlDoc = new XmlDocument();
+        xmlDoc.LoadXml(s);
+
+        XmlNode root = xmlDoc.DocumentElement;
+        XmlNode operazioni = root.SelectSingleNode("Operazioni");
+        XmlNodeList listOp = operazioni.SelectNodes("Op");
+        foreach (XmlNode node in listOp)
+        {
+            cmbOperazioni.Items.Add(node.InnerText);
+        }
+
+
+        public string sendServer(string xml)
+        {
+            UdpClient client = new UdpClient();
+            byte[] data = Encoding.UTF8.GetBytes(xml);
+            client.Send(data, data.Length, "127.0.0.1", 666);
+            IPEndPoint riceveEP = new IPEndPoint(IPAddress.Any, 0);
+            byte[] dataReceived = client.Receive(ref riceveEP);
+            String risposta = Encoding.UTF8.GetString(dataReceived);
+            return risposta;
+
+        }
+
+        public Object[] parseCommand(String xml) throws ParserConfigurationException, SAXException, IOException{
+        Object[] tmp = new Object[2];
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document document = builder.parse(new InputSource(new StringReader(xml)));
+        Element personaElement = document.getDocumentElement();
+
+        String firstName = personaElement.getElementsByTagName("nome").item(0).getTextContent();
+        String lastName = personaElement.getElementsByTagName("cognome").item(0).getTextContent();
+        int anno = Integer.parseInt(personaElement.getElementsByTagName("anno").item(0).getTextContent());
+        String numero = personaElement.getElementsByTagName("numero").item(0).getTextContent();
+        String command = personaElement.getElementsByTagName("exec").item(0).getTextContent();
+        persona p = new persona(firstName, lastName, numero, anno);
+        tmp[0] = command;
+        tmp[1] = p;
+        return tmp;
+
+
+    }
+
+    public String parseResponse(String message) throws ParserConfigurationException, TransformerException{
+        DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+        DocumentBuilder b = f.newDocumentBuilder();
+        Document d = b.newDocument();
+
+        Element radice = d.createElement("response");
+        d.appendChild(radice);
+        radice.appendChild(d.createTextNode(message));
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        transformer.transform(new DOMSource(d), streamResult);
+        return stringWriter.toString();
+
+
+    }
+
+    public String parseSinglePerson(persona p) throws ParserConfigurationException, TransformerFactoryConfigurationError, TransformerException{
+        Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+        Element personaElement = document.createElement("persona");
+        document.appendChild(personaElement);
+
+        Element nome = document.createElement("nome");
+        nome.appendChild(document.createTextNode(p.getNome()));
+        personaElement.appendChild(nome);
+
+        Element cognome = document.createElement("cognome");
+        cognome.appendChild(document.createTextNode(p.getCognome()));
+        personaElement.appendChild(cognome);
+
+        Element numero = document.createElement("numero");
+        numero.appendChild(document.createTextNode(p.getNumero()));
+        personaElement.appendChild(numero);
+
+        Element anno = document.createElement("anno");
+        anno.appendChild(document.createTextNode(Integer.toString(p.getAnno())));
+        personaElement.appendChild(anno);
+
+        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        DOMSource source = new DOMSource(document);
+        StringWriter writer = new StringWriter();
+        StreamResult result = new StreamResult(writer);
+        transformer.transform(source, result);
+        return writer.toString();
+
+    }
