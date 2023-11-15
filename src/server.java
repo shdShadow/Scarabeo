@@ -28,7 +28,7 @@ public class server {
                 String clientMessage = in.readLine();
 
                 // Verifica se il client ha chiuso la connessione
-                if (clientMessage == null) {
+                if (clientMessage.equals("exit")) {
                     System.out.println("Il client ha chiuso la connessione.");
                     break;
                 }

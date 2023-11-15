@@ -32,6 +32,7 @@ public class client {
 
                 // Verifica se l'utente ha inserito 'exit' per chiudere la connessione
                 if (userMessage.equalsIgnoreCase("exit")) {
+                    out.println(userMessage);
                     break;
                 }
 
