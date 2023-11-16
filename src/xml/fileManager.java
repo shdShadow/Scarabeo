@@ -17,7 +17,7 @@ public class fileManager {
     ArrayList<letter> letter_values = new ArrayList<letter>();
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder = factory.newDocumentBuilder();
-    Document document = builder.parse("./src/xml/letters_values.xml");
+    Document document = builder.parse(".  /src/xml/letters_values.xml");
     // Document root
     Element letter_list = document.getDocumentElement();
     // NodeList containing every letter
