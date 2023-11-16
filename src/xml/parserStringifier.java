@@ -1,4 +1,5 @@
 package xml;
+
 import java.io.File;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -36,43 +37,64 @@ public class parserStringifier {
     rootElement.appendChild(execElement);
     // elemento letter
     l = c.getL();
+
     for (letter letter : l) {
+      //Creo un tag letter
       Element elementLetter = doc.createElement("letter");
+      //Creo un altro tag carattere
+      //all'interno creo un text node contenente il carattere
       Element characterElement = doc.createElement("character");
       characterElement.appendChild(
           doc.createTextNode(String.valueOf(letter.getCharacter())));
+      //aggiungo in coda al tag letter il tag character
       elementLetter.appendChild(characterElement);
 
+      //svolgo lo stesso procedimento per il valore
+      //creo un tag value
+      //all'interno creo un text node contenente il valore
       Element valueElement = doc.createElement("value");
       valueElement.appendChild(
           doc.createTextNode((letter.getValue().toString())));
+      //aggiungo in coda al tag letter il tag value
       elementLetter.appendChild(valueElement);
 
+      //creo un tag punto
       Element puntoElement = doc.createElement("punto");
 
+      //aggiungo al tag punto un secondo tag x
       Element xElement = doc.createElement("x");
       xElement.appendChild(doc.createTextNode(letter.getP().getX().toString()));
       puntoElement.appendChild(xElement);
-
+      //aggiungo al tag punto un terzo tag y
       Element yElement = doc.createElement("y");
       yElement.appendChild(doc.createTextNode(letter.getP().getY().toString()));
       puntoElement.appendChild(yElement);
+      //aggiungo in coda al tag letter il tag punto
       elementLetter.appendChild(puntoElement);
+      //aggiungo in coda alla root il tag letter
+      //ESEMPIO
+      //<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+      // <comando>
+      //     <exec>add</exec>
+      //     <letter>
+      //         <character>D</character>
+      //         <value>2</value>
+      //         <punto>
+      //             <x>2</x>
+      //             <y>4</y>
+      //         </punto>
+      //     </letter>
+      //     <letter>
+      //         <character>G</character>
+      //         <value>3</value>
+      //         <punto>
+      //             <x>2</x>
+      //             <y>4</y>
+      //         </punto>
+      //     </letter>
+      // </comando>
       rootElement.appendChild(elementLetter);
-
-      // Element puntoElement = doc.createElement("punto");
-      // punto punto = letter.getP();
-      // Element xElement = doc.createElement("x");
-      // xElement.appendChild(doc.createTextNode(String.valueOf(punto.getX())));
-      // puntoElement.appendChild(xElement);
-
-      // Element yElement = doc.createElement("y");
-      // yElement.appendChild(doc.createTextNode(String.valueOf(punto.getY())));
-      // puntoElement.appendChild(yElement);
-
-      // rootElement.appendChild(puntoElement);
     }
-    // elemento punto
 
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     Transformer transformer = transformerFactory.newTransformer();
@@ -82,29 +104,29 @@ public class parserStringifier {
     return "finished";
   }
 
-    public static comando parseCommando(String client_command) throws Exception {
-      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-      DocumentBuilder builder = factory.newDocumentBuilder();
-      InputSource is = new InputSource(new StringReader(client_command));
-      Document doc = builder.parse(is);
+  public static comando parseCommando(String client_command) throws Exception {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    InputSource is = new InputSource(new StringReader(client_command));
+    Document doc = builder.parse(is);
 
-      Element root = doc.getDocumentElement();
-      String exec = root.getElementsByTagName("exec").item(0).getTextContent();
+    Element root = doc.getDocumentElement();
+    String exec = root.getElementsByTagName("exec").item(0).getTextContent();
 
-      NodeList letterNodes = root.getElementsByTagName("letter");
-      ArrayList<letter> letters = new ArrayList<letter>();
-      for (int i = 0; i < letterNodes.getLength(); i++) {
-        Element letterElement = (Element) letterNodes.item(i);
-        char character = letterElement.getElementsByTagName("character").item(0).getTextContent().charAt(0);
-        int value = Integer.parseInt(letterElement.getElementsByTagName("value").item(0).getTextContent());
-        int x = Integer.parseInt(letterElement.getElementsByTagName("x").item(0).getTextContent());
-        int y = Integer.parseInt(letterElement.getElementsByTagName("y").item(0).getTextContent());
-        punto p = new punto(x, y);
-        letter l = new letter(character, value, p);
-        letters.add(l);
-      }
-
-      comando c = new comando(exec, letters);
-      return c;
+    NodeList letterNodes = root.getElementsByTagName("letter");
+    ArrayList<letter> letters = new ArrayList<letter>();
+    for (int i = 0; i < letterNodes.getLength(); i++) {
+      Element letterElement = (Element) letterNodes.item(i);
+      char character = letterElement.getElementsByTagName("character").item(0).getTextContent().charAt(0);
+      int value = Integer.parseInt(letterElement.getElementsByTagName("value").item(0).getTextContent());
+      int x = Integer.parseInt(letterElement.getElementsByTagName("x").item(0).getTextContent());
+      int y = Integer.parseInt(letterElement.getElementsByTagName("y").item(0).getTextContent());
+      punto p = new punto(x, y);
+      letter l = new letter(character, value, p);
+      letters.add(l);
     }
+
+    comando c = new comando(exec, letters);
+    return c;
+  }
 }

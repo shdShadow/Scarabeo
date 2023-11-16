@@ -10,7 +10,7 @@ public class vocabolario {
   public vocabolario(){
     this.parole = caricaVocabolario();
   }
-
+  //Ottiene l'elenco delle parole di un vocabolario preso da internet
   private ArrayList<String> caricaVocabolario() {
     ArrayList<String> tmp = new ArrayList<String>();
     try (BufferedReader br =
@@ -30,43 +30,17 @@ public class vocabolario {
     }
     return tmp;
   }
-
+  //Ricerca una parola all'interno del vocabolario
+  //La ricerca e' svolta in modo sequenziale in quanto il tempo impiegato non e' troppo elevato
+  //E' possibile velocizzarlo implementando una ricerca binaria
   public boolean cercaParola(String parola_da_cercare){
-    long init = System.currentTimeMillis();
-    int index = ricercaBinaria(parola_da_cercare);
       boolean found = false;
     for(int i =0 ;i < parole.size(); i++){
       if (parole.get(i).equals(parola_da_cercare)){
         found = true;
-        long end = System.currentTimeMillis();
-        long tot = end - init;
-        System.out.println("Tempo impiegato per cercare parola: " + tot);
         break;
       }
     }
     return found;
-    // if(index != -1){
-    //   return true;
-    // }else{
-    //   return false;
-    // }
-  }
-  private int ricercaBinaria(String p){
-    int low = 0;
-    int high = parole.size()-1;
-
-    while(low <= high){
-      int middle = (low + high)/2;
-      String linea_mid = parole.get(middle);
-      int confronto = p.compareTo(linea_mid);
-      if(confronto == 0){
-        return middle;
-      }else if (confronto < 0){
-        high = middle - 1;
-      }else{
-        high = middle + 1;
-      }
-    }
-    return -1;
   }
 }

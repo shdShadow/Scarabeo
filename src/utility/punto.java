@@ -1,7 +1,9 @@
 package utility;
 public class punto {
+  //Posizioni nella matrice di gioco
   private Integer x;
   private Integer y;
+  //COSTRUTTORI
   public punto() {
     x = 0;
     y = 0;
@@ -11,7 +13,7 @@ public class punto {
     x = _x;
     y = _y;
   }
-
+  //GETTERS E SETTERS
   public Integer getX() { return x; }
   public Integer getY() { return y; }
   public void setX(Integer x) { this.x = x; }
