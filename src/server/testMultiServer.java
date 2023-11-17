@@ -29,7 +29,7 @@ public class testMultiServer {
             temp.add(new letter('E', new punto(6,4)));
             temp.add(new letter('R', new punto(7,4)));
             temp.add(new letter('O', new punto(8,4)));
-            drawForDebug.addToMatrix(temp);
+            drawMatrice.addToMatrix(temp);
             // Accettazione della connessione da parte del client
             Socket clientSocket1 = serverSocket.accept();
             Socket clientSocket2 = serverSocket.accept();
