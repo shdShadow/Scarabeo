@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<comando>
+    <exec>add</exec>
+    <letter>
+        <character>D</character>
+        <value>2</value>
+        <punto>
+            <x>2</x>
+            <y>4</y>
+        </punto>
+    </letter>
+    <letter>
+        <character>G</character>
+        <value>3</value>
+        <punto>
+            <x>2</x>
+            <y>4</y>
+        </punto>
+    </letter>
+</comando>

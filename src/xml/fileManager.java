@@ -25,9 +25,9 @@ public class fileManager {
     for (int i = 0; i < letters.getLength(); i++) {
       Element letter = (Element) letters.item(i);
       char character = letter.getElementsByTagName("carattere")
-                           .item(0)
-                           .getTextContent()
-                           .charAt(0);
+          .item(0)
+          .getTextContent()
+          .charAt(0);
       Integer value = Integer.parseInt(
           letter.getElementsByTagName("valore").item(0).getTextContent());
       letter l = new letter(character, value);
