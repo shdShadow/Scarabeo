@@ -39,5 +39,16 @@ public class app {
     //   String tmp2 = xmlContent.toString();
     //   c = parserStringifier.parseCommando(tmp2);
     
+    matriceScarabeo game = new matriceScarabeo();
+
+    player p1 = new player("p1");
+    player p2 = new player("p2");
+
+    punto p = new punto(2,4);
+    punto pu2 = new punto(3,8);
+
+    game.aggiungiLettera(4, 2, 'A', 10, p2, pu2);
+    game.aggiungiLettera(7, 2, 'X', 10, p2, pu2);
+    
   }
 }
