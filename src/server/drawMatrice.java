@@ -22,23 +22,24 @@ public class drawMatrice {
                 g.setColor(new Color(27, 111, 14));
                 g.fillRect(0, 0, getWidth(), getHeight());
 
-                int rows = 17; // Number of rows in the grid
-                int cols = 17; // Number of columns in the grid
+                int rows = 17; // Il numero di righe e colonne nello scarabeo e' di 17
+                int cols = 17; 
 
                 g.setColor(Color.BLACK);
                 int cellSize = Math.min(getWidth() / cols, getHeight() / rows);
 
-                // Draw squares and characters
+                //Disegno i quadrati e i caratteri al loro interno
                 for (int i = 0; i < rows; i++) {
                     for (int j = 0; j < cols; j++) {
                         int x = j * cellSize;
                         int y = i * cellSize;
                         g.drawRect(x, y, cellSize, cellSize);
 
-                        // Get the letter at the current position
+                        //Ottengo la lettera alla posizione corrente
                         char letter = getLetterAtPosition(i, j);
 
-                        // Draw the letter inside the cell
+                        //Disegno la lettera nella cella
+                        //TODO Cambiare il colore del carattere in base al giocatore
                         g.setColor(Color.WHITE);
                         g.setFont(new Font("Arial", Font.BOLD, cellSize / 2));
                         FontMetrics fm = g.getFontMetrics();
@@ -52,10 +53,9 @@ public class drawMatrice {
             }
 
             private char getLetterAtPosition(int row, int col) {
-                // TODO: Implement the logic to get the letter at the given position
-                // You can use the row and col values to access the corresponding punto object
-                // and retrieve the letter from it.
-                // Replace the return statement below with your implementation.
+                //Setto un placeholder se la cella è vuota
+                //Il placeholder puo essere qualsiasi cosa ma e' importante che non sia una lettera
+                //Per evitare confusione con le lettere inserite
                 if (gameMatrix[row][col] != null) {
                     return gameMatrix[row][col].getCharacter();
                 }else{
@@ -68,6 +68,7 @@ public class drawMatrice {
     }
 
     public static void addToMatrix(ArrayList<letter> l){
+        //Aggiungo le lettere nelle posizioni corrette nella matrice di gioco
         for (int i = 0; i < l.size(); i++) {
             gameMatrix[l.get(i).getP().getY()][l.get(i).getP().getX()] = l.get(i);
         }
