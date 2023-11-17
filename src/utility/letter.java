@@ -1,5 +1,7 @@
 package utility;
 
+import java.util.ArrayList;
+
 public class letter {
   private char character;
   private Integer value;
@@ -52,12 +54,27 @@ public class letter {
     p = _p;
   }
 
+  public letter(char _character, punto _p){
+    character = _character;
+    value = 0;
+    player = new player();
+    p = _p;
+  }
+
   // METHODS
 
   public String toString() {
     String s = "";
     s += "Char: " + character + " Value: " + value +
          " Player: " + player.getPlayer_name();
+    return s;
+  }
+
+  public static String returnWord(ArrayList<letter> l){
+    String s = "";
+    for (letter letter : l) {
+      s += letter.getCharacter();
+    }
     return s;
   }
 }

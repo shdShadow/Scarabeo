@@ -2,6 +2,7 @@ package xml;
 
 import java.io.File;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -99,9 +100,10 @@ public class parserStringifier {
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     Transformer transformer = transformerFactory.newTransformer();
     DOMSource source = new DOMSource(doc);
-    StreamResult result = new StreamResult(new File("./src/xml/test.xml"));
+    StringWriter stringWriter = new StringWriter();
+    StreamResult result = new StreamResult(stringWriter); 
     transformer.transform(source, result);
-    return "finished";
+    return stringWriter.toString();
   }
 
   public static comando parseCommando(String client_command) throws Exception {
