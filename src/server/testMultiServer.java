@@ -25,7 +25,7 @@ public class testMultiServer {
 
             // Add the remaining letters to form the word 'albero'
             temp.add(new letter('L', new punto(4,4)));
-            temp.add(new letter('B', new punto(5,6)));
+            temp.add(new letter('B', new punto(5,4)));
             temp.add(new letter('E', new punto(6,4)));
             temp.add(new letter('R', new punto(7,4)));
             temp.add(new letter('O', new punto(8,4)));

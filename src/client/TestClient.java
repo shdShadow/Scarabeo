@@ -36,7 +36,7 @@ public class TestClient {
 
             // Add the remaining letters to form the word 'albero'
             temp.add(new letter('L', new punto(4,4)));
-            temp.add(new letter('B', new punto(5,6)));
+            temp.add(new letter('B', new punto(5,4)));
             temp.add(new letter('E', new punto(6,4)));
             temp.add(new letter('R', new punto(7,4)));
             temp.add(new letter('O', new punto(8,4)));
@@ -47,6 +47,8 @@ public class TestClient {
             boolean turno = false;
             // Loop per gestire la comunicazione continua
             while (true) {
+                System.out.print("\033[H\033[2J");
+                System.out.println("Aspetta il tuo turno");
                 String serverResponse = in.readLine();
                 if (serverResponse.equalsIgnoreCase("stop")) {
                      System.out.print("\033[H\033[2J");

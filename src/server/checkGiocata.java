@@ -48,14 +48,14 @@ public class checkGiocata {
         boolean tmp = true;
         if (xModified){
             for(int i =0; i < letters.size(); i++){
-                if(letters.get(i).getP().getX() != letters.get(0).getP().getX()){
+                if(letters.get(i).getP().getY() != letters.get(0).getP().getY()){
                     tmp = false;
                     break;
                 }
             }
         }else if(yModified){
             for(int i =0; i < letters.size(); i++){
-                if(letters.get(i).getP().getY() != letters.get(0).getP().getY()){
+                if(letters.get(i).getP().getX() != letters.get(0).getP().getX()){
                     tmp = false;
                     break;
                 }
