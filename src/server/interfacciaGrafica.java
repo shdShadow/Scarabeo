@@ -14,10 +14,7 @@ public class interfacciaGrafica {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
 
-                //posiziono logo dello scarabeo
-                ImageIcon immagineScarabeo=new ImageIcon("scarabeoLogo.png");
-                Image image=immagineScarabeo.getImage();
-                g.drawImage(image, 0, 0, getWidth(),getHeight(),this);
+                
 
                 //Disegno scritta SCARABEO al centro in alto nella finestra
                 String scritta1="SCARABEO";
@@ -30,7 +27,7 @@ public class interfacciaGrafica {
                 g.drawString(scritta1, xScritta1, yScritta1);//disegna scritta1
 
 
-                
+
                 //Disegno scritta L'unico gioco di parole con lo scarabeo sotto la prima scritta
                 String scritta2 = "L'unico gioco di parole con lo scarabeo";
                 g.setColor(Color.RED);
@@ -46,8 +43,21 @@ public class interfacciaGrafica {
                 g.setColor(Color.WHITE);
                 g.drawString(scritta2, xScritta2, yScritta2);
 
+                //posiziono logo dello scarabeo
+                ImageIcon immagineScarabeo = new ImageIcon("scarabeoLogo.png");
+                Image image = immagineScarabeo.getImage();
+                int logoWidth = immagineScarabeo.getIconWidth();
+                int logoHeight = immagineScarabeo.getIconHeight();
+                int xImmagine = (getWidth() - logoWidth) / 2;
+                int yImmagine = yScritta2 + rectHeight + 20; // Posiziona sotto la scritta2
+                g.drawImage(image, xImmagine, yImmagine, this);
+            }
+        };
 
+            frame.add(panel);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
             }
         }
-    }
-}
+        
+    
