@@ -10,6 +10,7 @@ public class letter {
   // p will be set only when a player send a word.
   // p specifies the position in the game matrix
   private punto p;
+  public boolean borrowed = false;
   // GETTERS AND SETTERS
 
   public char getCharacter() { return character; }
@@ -23,6 +24,11 @@ public class letter {
   public void setP(punto p) {
     this.p = p;
 }
+  public void setCharacter(char character) { this.character = character; }
+
+  public void setPlayer(player player) { this.player = player; }
+
+  public Boolean getBorrowed() { return borrowed; }
 
   //   CONSTRUCTORS
 
@@ -54,10 +60,25 @@ public class letter {
     p = _p;
   }
 
+  public letter (char _character, Integer _value, player _player, punto _p,Boolean _borrowed){
+    character = _character;
+    value = _value;
+    player = _player;
+    borrowed = _borrowed;
+    p = _p;
+  }
+
   public letter(char _character, punto _p){
     character = _character;
     value = 0;
     player = new player();
+    p = _p;
+  }
+
+  public letter(char _character, punto _p, player _player){
+    character = _character;
+    value = 0;
+    player = _player;
     p = _p;
   }
 
@@ -77,4 +98,6 @@ public class letter {
     }
     return s;
   }
+
+
 }
