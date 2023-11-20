@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
 
+
+//classe client per creare e gestire la matrice
 public class drawMatrice {
     public static letter[][] gameMatrix = new letter[17][17];
     public static void drawGrid() {
@@ -74,4 +76,7 @@ public class drawMatrice {
         }
         drawGrid();
     }
-}
+ }   
+
+
+
