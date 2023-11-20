@@ -1,13 +1,19 @@
 package server;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import utility.letter;
 import utility.vocabolario;
+import xml.fileManager;
 
 public class checkGiocata {
     private static vocabolario vocabolario = new vocabolario();
-    public static String[] checkParola(ArrayList<letter> letters) {
+    public static String[] checkParola(ArrayList<letter> letters) throws ParserConfigurationException, IOException, SAXException {
         String[] response = new String[2];
         String parola = letter.returnWord(letters);
         boolean temp = true;
@@ -27,6 +33,7 @@ public class checkGiocata {
         }
         if (temp){
             response[0] = "ok";
+            response[1] = calcolaPunteggio(letters);
         }else{
             response[0] = "error";
         }
@@ -62,5 +69,18 @@ public class checkGiocata {
             }
         }
         return tmp;
+    }
+
+    private static String calcolaPunteggio(ArrayList<letter> l) throws ParserConfigurationException, IOException, SAXException{
+        ArrayList<letter> values = fileManager.getLetterValues();
+        Integer punteggio = 0;
+        for (letter letter : l){
+            for (letter value : values){
+                if (letter.getCharacter() == value.getCharacter()){
+                    punteggio += value.getValue();
+                }
+            }
+        }
+        return punteggio.toString();
     }
 }
