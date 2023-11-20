@@ -13,23 +13,14 @@ import xml.parserStringifier;
 
 public class testMultiServer {
     public static void main(String[] args) throws Exception {
+        sacchettoLettere sl = new sacchettoLettere();
+        boolean first = true;
         try {
             // Creazione del ServerSocket in ascolto sulla porta specificata
             ServerSocket serverSocket = new ServerSocket(666);
             System.out.println("Server in attesa di connessioni...");
             Socket[] listSocket = new Socket[2];
-            //TEST
-            ArrayList<letter> temp = new ArrayList<letter>();
-            letter l1 = new letter('A', new punto(3,4));
-            temp.add(l1);
-
-            // Add the remaining letters to form the word 'albero'
-            temp.add(new letter('L', new punto(4,4)));
-            temp.add(new letter('B', new punto(5,4)));
-            temp.add(new letter('E', new punto(6,4)));
-            temp.add(new letter('R', new punto(7,4)));
-            temp.add(new letter('O', new punto(8,4)));
-            drawMatrice.addToMatrix(temp);
+            int[] points = new int[2];
             // Accettazione della connessione da parte del client
             Socket clientSocket1 = serverSocket.accept();
             Socket clientSocket2 = serverSocket.accept();
@@ -47,11 +38,22 @@ public class testMultiServer {
             }
             int turno = 0;
             // Loop per gestire la comunicazione continua
+            ArrayList<letter> mano1 = sl.getRandomLetters(8, 1);
+            ArrayList<letter> mano2 = sl.getRandomLetters(8, 2);
+            outs[0].println(parserStringifier.stringifyCommand(new comando("hand", mano1)));
+            outs[1].println(parserStringifier.stringifyCommand(new comando("hand", mano2)));
+            comando c = new comando();
             while (true) {
+                
                 // Lettura del messaggio inviato dal client
                 PrintWriter out = outs[turno];
                 BufferedReader in = ins[turno];
-                out.println("Play");
+                out.println("play");
+                if (!first) {
+                    c.setExec("update");
+                    out.println(parserStringifier.stringifyCommand(c));
+                    first = false;
+                }
                 String clientMessage = in.readLine();
 
                 // Verifica se il client ha chiuso la connessione
@@ -59,22 +61,34 @@ public class testMultiServer {
                     System.out.println("Il client ha chiuso la connessione.");
                     break;
                 }
+                
 
                 // System.out.println("Messaggio ricevuto dal client: " + turno + " "
-                // +clientMessage); 
-                comando c = parserStringifier.parseCommando(clientMessage);
+                // +clientMessage);
+                c = parserStringifier.parseCommando(clientMessage);
                 String response[] = checkGiocata.checkParola(c.getL());
                 // Risposta al client
                 if (response[0].equals("error")) {
                     out.println(response[0] + ";" + response[1]);
                 } else if (response[0].equals("ok")) {
-                    out.println(response[0] + ";");
+                    points[turno] += Integer.parseInt(response[1]);
+                    out.println(response[0] + ";" + points[turno]);
+                    int counter = 0;
+                    for (letter letter : c.getL()) {
+                        if (letter.borrowed) {
+                            counter++;
+                        }
+                    }
+                    ArrayList<letter> pescata = sl.getRandomLetters(c.getL().size()-counter, turno+1);
+                    out.println(parserStringifier.stringifyCommand(new comando("hand", pescata)));
+                    out.println("stop");
                     if (turno == 0) {
                         turno = 1;
                     } else {
                         turno = 0;
                     }
                 }
+                first = false;
 
             }
 
