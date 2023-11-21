@@ -13,7 +13,8 @@ import xml.fileManager;
 
 public class checkGiocata {
     private static vocabolario vocabolario = new vocabolario();
-    public static String[] checkParola(ArrayList<letter> letters) throws ParserConfigurationException, IOException, SAXException {
+    
+    public static String[] checkParola(ArrayList<letter> letters, int giocate) throws ParserConfigurationException, IOException, SAXException {
         String[] response = new String[2];
         String parola = letter.returnWord(letters);
         boolean temp = true;
@@ -28,9 +29,28 @@ public class checkGiocata {
                 response[1] = "La parola non e' orizzontale o verticale";
             }
         }else{
-            temp = true;
+            temp = false;
             response[1] = "La parola non esiste nel vocabolario";
         }
+        if (temp){
+            if(giocate > 0 ){
+            boolean interseca = false;
+            for (letter letter : letters) {
+                if (letter.getBorrowed()){
+                    interseca = true;
+                    break;
+                }
+            }
+            if (interseca){
+                temp = true;
+                response[1] = "";
+            }else{
+                temp = false;
+                response[1] ="La parola deve intersecare una casella!";
+            }
+        }
+        }
+        
         if (temp){
             response[0] = "ok";
             response[1] = calcolaPunteggio(letters);
