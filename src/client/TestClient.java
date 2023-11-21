@@ -1,7 +1,10 @@
 package client;
+
 import utility.*;
 import xml.parserStringifier;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,11 +17,14 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
-public class TestClient {
-    public static void main(String[] args) throws TransformerConfigurationException, ParserConfigurationException, TransformerException {
+import server.drawMatrice;
+import server.server;
+
+public class TestClient implements KeyListener {
+    public static void main(String[] args) throws Exception {
         final String SERVER_IP = "localhost";
         final int PORT_NUMBER = 666;
-
+        
         try {
             // Connessione al server
             Socket socket = new Socket(SERVER_IP, PORT_NUMBER);
@@ -30,55 +36,94 @@ public class TestClient {
             // Scanner per leggere l'input dell'utente
             Scanner scanner = new Scanner(System.in);
             ArrayList<letter> temp = new ArrayList<letter>();
-
-            letter l1 = new letter('A', new punto(3,4));
-            temp.add(l1);
-
-            // Add the remaining letters to form the word 'albero'
-            temp.add(new letter('L', new punto(4,4)));
-            temp.add(new letter('B', new punto(5,4)));
-            temp.add(new letter('E', new punto(6,4)));
-            temp.add(new letter('R', new punto(7,4)));
-            temp.add(new letter('O', new punto(8,4)));
-
-            // Rest of the code...
             
+            // letter l1 = new letter('A', new punto(3,4));
+            // temp.add(l1);
+
+            // // Add the remaining letters to form the word 'albero'
+            // temp.add(new letter('L', new punto(4,4)));
+            // temp.add(new letter('B', new punto(5,4)));
+            // temp.add(new letter('E', new punto(6,4)));
+            // temp.add(new letter('R', new punto(7,4)));
+            // temp.add(new letter('O', new punto(8,4)));
+
+            // // Rest of the code...
 
             boolean turno = false;
+            ArrayList<letter> mano = parserStringifier.parseCommando(in.readLine()).getL();
+            drawMatrice dm = new drawMatrice();
+            
+            dm.setVisible(true);
+            dm.setSize(1280, 720);
+            dm.setTitle("SCARABEO");
+            dm.setMano(mano);
+            dm.repaint();
+            dm.setPlayer_name(mano.get(0).getPlayer().getPlayer_name());
+            KeyListener additionalKeyListener = new KeyListener() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    // Enter key is pressed
+                    try {
+                        sendServer(out, dm);
+                    } catch (ParserConfigurationException | TransformerException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                    // TODO: Handle Enter key press event
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                // TODO: Handle additional key release event
+                System.out.println("Additional Key Released");
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                // TODO: Handle additional key typed event
+            }
+        };
+            dm.addKeyListener(additionalKeyListener);
+            boolean first = true;
+            if (mano.get(0).getPlayer().getPlayer_name().equals("Player1")){
+                first = true;
+            }
+            else{
+                first = false;
+            }
             // Loop per gestire la comunicazione continua
             while (true) {
-                System.out.print("\033[H\033[2J");
-                System.out.println("Aspetta il tuo turno");
                 String serverResponse = in.readLine();
+                if (serverResponse.charAt(0) == '<'){
+                    comando c = parserStringifier.parseCommando(serverResponse);
+                    if (c.getExec().equals("update")){
+                        dm.UpdateMatrix(c.getL());
+                    }
+                    if (c.getExec().equals("hand")){
+                        dm.addToMano(c.getL());
+                    }
+                }
                 if (serverResponse.equalsIgnoreCase("stop")) {
-                     System.out.print("\033[H\033[2J");
-                    System.out.println("Non e' il tuo turno");
+                    System.out.print("\033[H\033[2J");
+                    dm.setStatus("stop");
                     turno = false;
                 } else if (serverResponse.equalsIgnoreCase("play")) {
                     turno = true;
+                    dm.setStatus("play");
                 }
-                if (turno == true) {
-                    // Richiesta di input da parte dell'utente
-                    //System.out.print("Inserisci un messaggio (o 'exit' per terminare): ");
-                    //String userMessage = scanner.nextLine();
-                    System.out.println("provo ad inserire la parola albero");
-                    scanner.nextLine();
-                    String userMessage = parserStringifier.stringifyCommand(new comando("add", temp));
-                    out.println(userMessage);
-
-                    if (userMessage.equalsIgnoreCase("exit")) {
-                        out.println(userMessage);
-                        break;
+                else {
+                    String[] fields = serverResponse.split(";");
+                    if (fields[0].equals("error")) {
+                        System.out.println("Errore: " + fields[1]);
+                        turno = true;
+                    } else if (fields[0].equals("ok")) {
+                        dm.setPoints(Integer.parseInt(fields[1]));
                     }
-                    turno = false;
-
-                } else {
-                   String[] fields = serverResponse.split(";");                   if (fields[0].equals("error")) {
-                       System.out.println("Errore: " + fields[1]);
-                       turno = true;
-                   } else if (fields[0].equals("ok")) {
-                       System.out.println("Parola inserita correttamente");
-                   }
+                }
+                if ( 2== 1){
+                    break;
                 }
 
                 // // Invio del messaggio al server
@@ -101,4 +146,33 @@ public class TestClient {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        // TODO Auto-generated method stub
+        System.out.println("Suca");
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        // TODO Auto-generated method stub
+        System.out.println("Suca");
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public static void sendServer(PrintWriter out, drawMatrice dm) throws TransformerConfigurationException, ParserConfigurationException, TransformerException {
+        ArrayList<letter> temp = dm.getBuffer();
+        String s = parserStringifier.stringifyCommand(new comando("add", temp));
+        out.println(s);
+    }
+
+    
+
 }
+
