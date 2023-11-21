@@ -17,6 +17,7 @@ public class testMultiServer {
         boolean first = true;
         try {
             // Creazione del ServerSocket in ascolto sulla porta specificata
+
             ServerSocket serverSocket = new ServerSocket(666);
             System.out.println("Server in attesa di connessioni...");
             Socket[] listSocket = new Socket[2];
@@ -36,18 +37,20 @@ public class testMultiServer {
                 ins[i] = new BufferedReader(new InputStreamReader(listSocket[i].getInputStream()));
                 outs[i] = new PrintWriter(listSocket[i].getOutputStream(), true);
             }
-            int turno = 0;
+            int turno = 1;
+            int giocate = 0;
             // Loop per gestire la comunicazione continua
+
             ArrayList<letter> mano1 = sl.getRandomLetters(8, 1);
             ArrayList<letter> mano2 = sl.getRandomLetters(8, 2);
             outs[0].println(parserStringifier.stringifyCommand(new comando("hand", mano1)));
             outs[1].println(parserStringifier.stringifyCommand(new comando("hand", mano2)));
             comando c = new comando();
             while (true) {
-                
+
                 // Lettura del messaggio inviato dal client
-                PrintWriter out = outs[turno];
-                BufferedReader in = ins[turno];
+                PrintWriter out = outs[turno % 2];
+                BufferedReader in = ins[turno % 2];
                 out.println("play");
                 if (!first) {
                     c.setExec("update");
@@ -61,34 +64,60 @@ public class testMultiServer {
                     System.out.println("Il client ha chiuso la connessione.");
                     break;
                 }
-                
 
                 // System.out.println("Messaggio ricevuto dal client: " + turno + " "
                 // +clientMessage);
+                String response[] = new String[2];
                 c = parserStringifier.parseCommando(clientMessage);
-                String response[] = checkGiocata.checkParola(c.getL());
-                // Risposta al client
-                if (response[0].equals("error")) {
-                    out.println(response[0] + ";" + response[1]);
-                } else if (response[0].equals("ok")) {
-                    points[turno] += Integer.parseInt(response[1]);
-                    out.println(response[0] + ";" + points[turno]);
-                    int counter = 0;
-                    for (letter letter : c.getL()) {
-                        if (letter.borrowed) {
-                            counter++;
-                        }
-                    }
-                    ArrayList<letter> pescata = sl.getRandomLetters(c.getL().size()-counter, turno+1);
-                    out.println(parserStringifier.stringifyCommand(new comando("hand", pescata)));
+                if (c.getExec().equals("switch")) {
+                    ArrayList<letter> hand = sl.getRandomLetters(8, turno % 2);
+                    out.println(parserStringifier.stringifyCommand(new comando("hand", hand)));
+                    first = false;
                     out.println("stop");
-                    if (turno == 0) {
-                        turno = 1;
+                    turno++;
+                } else {
+                    response = checkGiocata.checkParola(c.getL(), giocate);
+                    // Risposta al client
+                    if (response[0].equals("error")) {
+                        out.println(response[0] + ";" + response[1]);
+                    } else if (response[0].equals("ok")) {
+                        giocate ++ ;
+                        points[turno % 2] += Integer.parseInt(response[1]);
+                        out.println(response[0] + ";" + points[turno % 2]);
+                        int counter = 0;
+                        for (letter letter : c.getL()) {
+                            if (letter.borrowed) {
+                                counter++;
+                            }
+                        }
+                        ArrayList<letter> pescata = sl.getRandomLetters(c.getL().size() - counter, (turno % 2) + 1);
+                        out.println(parserStringifier.stringifyCommand(new comando("hand", pescata)));
+                        out.println("stop");
+                        turno++;
+
+                    }
+                    
+                }
+                
+                
+                if (response[0] != null) {
+                    if (response[0].equals("error")) {
+                        first = true;
                     } else {
-                        turno = 0;
+                        first = false;
                     }
                 }
-                first = false;
+
+                int winner = checkWinner(points);
+                if (winner > -1) {
+                    for (int i = 0; i < outs.length; i++) {
+                        if (i == winner) {
+                            outs[i].println("win");
+                        } else {
+                            outs[i].println("lose");
+                        }
+                    }
+                }
 
             }
 
@@ -102,5 +131,15 @@ public class testMultiServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static int checkWinner(int[] points) {
+        int index = -1;
+        for (int i = 0; i < points.length; i++) {
+            if (points[i] >= settings.max_punteggio) {
+                index = i;
+            }
+        }
+        return index;
     }
 }
