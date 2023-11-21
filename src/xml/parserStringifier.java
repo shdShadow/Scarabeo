@@ -72,6 +72,20 @@ public class parserStringifier {
       puntoElement.appendChild(yElement);
       //aggiungo in coda al tag letter il tag punto
       elementLetter.appendChild(puntoElement);
+
+      //creo un tag player
+      Element playerElement = doc.createElement("player");
+      //aggiungo al tag player un secondo tag player_name
+      Element player_nameElement = doc.createElement("player_name");
+      player_nameElement.appendChild(
+          doc.createTextNode(letter.getPlayer().getPlayer_name()));
+      playerElement.appendChild(player_nameElement);
+      elementLetter.appendChild(playerElement);
+
+      Element borrowElement = doc.createElement("borrow");
+      borrowElement.appendChild(
+          doc.createTextNode(letter.getBorrowed().toString()));
+      elementLetter.appendChild(borrowElement);
       //aggiungo in coda alla root il tag letter
       //ESEMPIO
       //<?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -123,8 +137,10 @@ public class parserStringifier {
       int value = Integer.parseInt(letterElement.getElementsByTagName("value").item(0).getTextContent());
       int x = Integer.parseInt(letterElement.getElementsByTagName("x").item(0).getTextContent());
       int y = Integer.parseInt(letterElement.getElementsByTagName("y").item(0).getTextContent());
+      String playerName = letterElement.getElementsByTagName("player_name").item(0).getTextContent();
+      Boolean borrowed = Boolean.parseBoolean(letterElement.getElementsByTagName("borrow").item(0).getTextContent());
       punto p = new punto(x, y);
-      letter l = new letter(character, value, p);
+      letter l = new letter(character, value, new player(playerName), p, borrowed);
       letters.add(l);
     }
 
