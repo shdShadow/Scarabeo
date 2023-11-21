@@ -3,7 +3,7 @@ package server;
 import javax.swing.*;
 import java.awt.*;
 
-public class interfacciaGrafica {
+public class interfacciaGrafica extends JFrame {
     public interfacciaGrafica() {
         JFrame frame = new JFrame("Scarabeo");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
