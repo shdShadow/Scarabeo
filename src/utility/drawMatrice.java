@@ -1,5 +1,5 @@
 
-package server;
+package utility;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -17,17 +17,12 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import utility.letter;
-import utility.player;
-import utility.punto;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.JFrame;
-import utility.letter;
-import utility.punto;
 
 public class drawMatrice extends JFrame implements KeyListener {
     private static final int MATRIX_SIZE = 17;

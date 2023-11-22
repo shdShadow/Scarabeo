@@ -13,6 +13,11 @@ public class letter {
   public boolean borrowed = false;
   // GETTERS AND SETTERS
 
+  /**
+   * Returns the character value of this Letter.
+   *
+   * @return the character value of this Letter
+   */
   public char getCharacter() { return character; }
 
   public player getPlayer() { return player; }
