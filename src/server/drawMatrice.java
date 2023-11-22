@@ -1,3 +1,4 @@
+
 package server;
 
 import java.awt.Color;
@@ -10,8 +11,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.CookieManager;
 import java.util.ArrayList;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import utility.letter;
 import utility.player;
@@ -39,6 +43,7 @@ public class drawMatrice extends JFrame implements KeyListener {
     private punto cursorPosition;
     private String mex = "Niente per ora";
     private String status = "None";
+    public int counter = 0;
 
     @Override
     public void paint(final Graphics g) {
@@ -68,6 +73,16 @@ public class drawMatrice extends JFrame implements KeyListener {
         setResizable(false);
 
         this.addKeyListener(this);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                finestraChiusa();
+            }
+        });
+    }
+
+    private void finestraChiusa(){
+        System.out.println("Palle");
     }
 
     private void addToMatrix(ArrayList<letter> list) {
@@ -201,7 +216,6 @@ public class drawMatrice extends JFrame implements KeyListener {
         String parola = letter.returnWord(buffer);
         g.drawString("Parola corrente: " + parola, labelXParolaCorrente, labelYParolaCorrente);
 
-
     }
 
     private void undoPlayerMove() {
@@ -278,9 +292,15 @@ public class drawMatrice extends JFrame implements KeyListener {
                             }
                         }
                     } else {
-                        addToBuffer(l);
-                        removeFromCoda(l);
-                        mex = "Niente per ora";
+                        if (checkIfCellWritable(l)) {
+                            addToBuffer(l);
+                            removeFromCoda(l);
+                            mex = "Niente per ora";
+                            counter++;
+                        } else {
+                            mex = "Non puoi scrivere li";
+                        }
+
                     }
 
                 } else {
@@ -300,10 +320,10 @@ public class drawMatrice extends JFrame implements KeyListener {
                                 mex = "Non puoi sovrascrivere una lettera di un altro giocatore";
                             }
                         }
-                    }else{
+                    } else {
                         mex = "Non hai questa lettera in mano";
                     }
-                    
+
                 }
             } else {
                 mex = "Non e' il tuo turno";
@@ -372,6 +392,20 @@ public class drawMatrice extends JFrame implements KeyListener {
         repaint();
     }
 
+    public void setMex(String[] s) {
+        if (s[0].equals("error")) {
+            mex = s[1];
+            undoPlayerMove();
+            repaint();
+        }
+
+    }
+
+    public void setMex(String s) {
+        mex = s;
+        repaint();
+    }
+
     public ArrayList<letter> getBuffer() {
         return buffer;
     }
@@ -398,6 +432,80 @@ public class drawMatrice extends JFrame implements KeyListener {
             mano.add(letter);
         }
         repaint();
+    }
+
+    public boolean checkIfCellWritable(letter l) {
+        boolean viable = true;
+        int y = l.getP().getY();
+        int x = l.getP().getX();
+        //check nord-ovest
+        
+        if (gameMatrix[y - 1][x] != null && gameMatrix[y][x - 1] != null) {
+            viable = false;
+        }
+        //check nord-est
+        if (gameMatrix[y - 1][x] != null && gameMatrix[y][x + 1] != null) {
+            viable = false;
+        }
+        //check sud-ovest
+        if (gameMatrix[y + 1][x] != null && gameMatrix[y][x - 1] != null) {
+            viable = false;
+        }
+        //check sud-est
+        if (gameMatrix[y + 1][x] != null && gameMatrix[y][x + 1] != null) {
+            viable = false;
+        }
+        return viable;
+    }
+
+    public boolean checkIfLetterOfBufferExists(letter l, String direction){
+        boolean found = false;
+        int y = 0;
+        int x = 0;
+        switch(direction){
+            case "up":
+            y = l.getP().getY();
+            for (letter letter : buffer) {
+                if (letter.getP().getY() == y - 1){
+                    found = true;
+                    break;
+                }
+            }
+            break;
+            case "down":
+            y = l.getP().getY();
+            for (letter letter : buffer) {
+                if (letter.getP().getY() == y + 1){
+                    found = true;
+                    break;
+                }
+            }
+            break;
+            case "left":
+            x = l.getP().getX();
+            for (letter letter : buffer) {
+                if (letter.getP().getX() == x - 1){
+                    found = true;
+                    break;
+                }
+            }
+            break;
+            case "right":
+            x = l.getP().getX();
+            for (letter letter : buffer) {
+                if (letter.getP().getX() == x + 1){
+                    found = true;
+                    break;
+                }
+            }
+            break;
+        }
+
+        return found;
+    }
+
+    public void resetMano(){
+        mano.clear();
     }
 
 }
