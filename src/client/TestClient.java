@@ -20,7 +20,7 @@ import javax.xml.transform.TransformerException;
 import server.drawMatrice;
 import server.server;
 
-public class TestClient implements KeyListener {
+public class TestClient {
     public static void main(String[] args) throws Exception {
         final String SERVER_IP = "localhost";
         final int PORT_NUMBER = 666;
@@ -72,6 +72,15 @@ public class TestClient implements KeyListener {
                     }
                     // TODO: Handle Enter key press event
                 }
+                
+                if (e.getKeyCode() == KeyEvent.VK_SHIFT && e.getKeyLocation() == KeyEvent.KEY_LOCATION_LEFT) {
+                    try {
+                        sendServerSwitchHand(out, dm);
+                    } catch (ParserConfigurationException | TransformerException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                }
             }
 
             @Override
@@ -105,7 +114,7 @@ public class TestClient implements KeyListener {
                         dm.addToMano(c.getL());
                     }
                 }
-                if (serverResponse.equalsIgnoreCase("stop")) {
+                 else if(serverResponse.equalsIgnoreCase("stop")) {
                     System.out.print("\033[H\033[2J");
                     dm.setStatus("stop");
                     turno = false;
@@ -113,11 +122,24 @@ public class TestClient implements KeyListener {
                     turno = true;
                     dm.setStatus("play");
                 }
+                else if (serverResponse.equalsIgnoreCase("win") || serverResponse.equalsIgnoreCase("lose")){
+                    //call method to close window
+                    if (serverResponse.equalsIgnoreCase("win")){
+                        dm.setMex("HAI VINTO");
+                    }
+                    else{
+                        dm.setMex("HAI PERSO");
+                    }
+                    dm.setStatus("stop");
+                    closeProgram();
+                }
                 else {
                     String[] fields = serverResponse.split(";");
                     if (fields[0].equals("error")) {
-                        System.out.println("Errore: " + fields[1]);
                         turno = true;
+                        dm.setMex(fields);
+                        dm.setStatus("play");
+                        
                     } else if (fields[0].equals("ok")) {
                         dm.setPoints(Integer.parseInt(fields[1]));
                     }
@@ -147,24 +169,7 @@ public class TestClient implements KeyListener {
         }
     }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-        // TODO Auto-generated method stub
-        System.out.println("Suca");
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        // TODO Auto-generated method stub
-        System.out.println("Suca");
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-        // TODO Auto-generated method stub
-
-    }
+    
 
     public static void sendServer(PrintWriter out, drawMatrice dm) throws TransformerConfigurationException, ParserConfigurationException, TransformerException {
         ArrayList<letter> temp = dm.getBuffer();
@@ -172,7 +177,22 @@ public class TestClient implements KeyListener {
         out.println(s);
     }
 
+    public static void sendServerSwitchHand(PrintWriter out, drawMatrice dm) throws TransformerConfigurationException, ParserConfigurationException, TransformerException {
+        ArrayList<letter> temp = new ArrayList<letter>();
+        String s = parserStringifier.stringifyCommand(new comando("switch", temp));
+        dm.resetMano();
+        out.println(s);
+    }
+
+    public static void closeProgram() throws InterruptedException{
+        int delayInSeconds = 5; // Replace with your desired delay in seconds
+            Thread.sleep(delayInSeconds * 1000);
+            System.exit(0);
+    }
+
+    
+    
+
     
 
 }
-
