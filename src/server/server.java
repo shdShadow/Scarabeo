@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import xml.parserStringifier;
 
-public class Server {
+public class server {
     public static void main(String[] args) throws Exception {
         sacchettoLettere sl = new sacchettoLettere();
         boolean first = true;
