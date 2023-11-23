@@ -1,4 +1,4 @@
-package server;
+package utility;
 
 import javax.swing.*;
 import java.awt.*;
@@ -88,7 +88,6 @@ public class interfacciaGrafica extends JFrame {
                 ImageIcon immagineScarabeo = new ImageIcon("scarabeoLogo.png");
                 Image image = immagineScarabeo.getImage();
                 int logoWidth = immagineScarabeo.getIconWidth();
-                int logoHeight = immagineScarabeo.getIconHeight();
                 int xImmagine = (getWidth() - logoWidth) / 2;
                 int yImmagine = yScritta2 + rectHeight + 20;
                 g.drawImage(image, xImmagine, yImmagine, this);
