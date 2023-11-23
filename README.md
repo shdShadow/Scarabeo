@@ -12,3 +12,25 @@ cd Scarabeo\
 code .
 ```
 E' possibile utilizzare qualsiasi editor di codice, l'importante e' che il progetto venga aperta alla sua root e non nella cartella src\
+### Da github
+- Fai click sul pulsante "<> Code"
+- Seleziona dal menu la voce "Download Zip"
+- Estrai l'archivio in una posizione a piacere
+- Apri il progetto tramite l'editor che preferisci dalla sua root e non dalla cartella src\
+## Avvio
+- Avvia un istanza del server eseguendo il file ` server.java `
+- Avvia due istanze di client eseguendo il file ` client.java ` 
+- Divertiti!
+## Regole
+Alcune regole vengono direttamente dal gioco originale, altre invece sono state modificate per rendere il gioco piu' rapido e piu' facile da implementare
+- La prima parola della partita puo' essere scritta in qualsiasi parte dal tabellone e non per forza al centro
+- Tutte le parole a partire dalla seconda devono per forza intersecarsi con almeno una lettera di un altra parola gia' presente sul tabellone
+- La parole possone essere scritte in verticale, orizzantale in ordine corretto o inverso ma non possono essere scritte in diagonale
+- La partita finisce al raggiungimento di un punteggio massimo (Impostato a 20 di default).
+## Tasti e comandi 
+- Arrow Keys -> Movimento all'interno del campo di gioco
+- Enter      -> Invio parola al server
+- Left_Shift -> Cambio mano e passo il turno
+- Esc        -> Annullamento della giocata attuale
+## Personalizzazione
+Alcuni settaggi come il punteggio massimo, la dimensione delle caselle disegnate,... sono modificabili tramite il file settings.java
