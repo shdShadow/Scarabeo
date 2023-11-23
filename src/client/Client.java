@@ -45,14 +45,8 @@ public class Client {
             // Scanner per leggere l'input dell'utente
             //boolean turno = false;
 
-            /**
-            * Legge la risposta dal server e utilizza il parser per ottenere un oggetto comando,
-            * quindi estrae la lista di lettere (mano del giocatore) dall'oggetto comando.
-            */
+            // Ottieni la mano del giocatore dal server e inizializza la matrice di gioco
             ArrayList<letter> mano = parserStringifier.parseCommando(in.readLine()).getL();
-            /**
-            * Crea nuovo oggetto della classe drawMatrice
-            */
             drawMatrice dm = new drawMatrice();
             lw.setVisible(false);
             lw.dispose();
@@ -62,11 +56,13 @@ public class Client {
             dm.setMano(mano);
             dm.repaint();
             dm.setPlayer_name(mano.get(0).getPlayer().getPlayer_name());
+            // Aggiungi un KeyListener per gestire gli eventi della tastiera
             KeyListener additionalKeyListener = new KeyListener() {
                 @Override
                 public void keyPressed(KeyEvent e) {
                     if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                         try {
+                            // Invia al server i dati aggiornati della matrice di gioco quando viene premuto il tasto "Invio"
                             sendServer(out, dm);
                         } catch (ParserConfigurationException | TransformerException e1) {
                             e1.printStackTrace();
@@ -75,23 +71,38 @@ public class Client {
 
                     if (e.getKeyCode() == KeyEvent.VK_SHIFT && e.getKeyLocation() == KeyEvent.KEY_LOCATION_LEFT) {
                         try {
+                            // Invia al server un comando per cambiare la mano del giocatore quando viene premuto il tasto "Shift sinistro"
                             sendServerSwitchHand(out, dm);
                         } catch (ParserConfigurationException | TransformerException e1) {
                             e1.printStackTrace();
                         }
                     }
                 }
-
+                
+                /**
+                * Metodo chiamato quando un tasto della tastiera viene rilasciato.
+                 *
+                * @param e L'evento KeyEvent associato al rilascio di un tasto
+                */
                 @Override
                 public void keyReleased(KeyEvent e) {
                 }
-
+                /**
+                * Metodo chiamato quando viene inserito un carattere dalla tastiera.
+                *
+                * @param e L'evento KeyEvent associato all'inserimento di un carattere
+                */
                 @Override
                 public void keyTyped(KeyEvent e) {
                 }
             };
             dm.addKeyListener(additionalKeyListener);
             dm.addWindowListener(new WindowAdapter() {
+                /**
+                * Metodo chiamato quando l'utente chiude la finestra del gioco.
+                *
+                * @param e L'evento WindowEvent associato alla chiusura della finestra
+                */
                 @Override
                 public void windowClosing(WindowEvent e) {
                     try {
@@ -103,6 +114,9 @@ public class Client {
                 }
             });
             while (true) {
+                /**
+                 * Stringa che rappresenta la risposta ricevuta dal server.
+                */
                 String serverResponse = in.readLine();
                 if (serverResponse.charAt(0) == '<') {
                     comando c = parserStringifier.parseCommando(serverResponse);
@@ -145,21 +159,54 @@ public class Client {
         }
     }
 
+    /**
+     * Invia al server una richiesta di aggiornamento della matrice di gioco.
+     *
+     * @param out L'oggetto PrintWriter per l'output verso il server
+     * @param dm  L'oggetto drawMatrice che gestisce la matrice di gioco
+     * @throws TransformerConfigurationException in caso di configurazione errata del trasformatore XML
+     * @throws ParserConfigurationException      in caso di errore nella configurazione del parser XML
+     * @throws TransformerException             in caso di errore durante la trasformazione XML
+     */
     public static void sendServer(PrintWriter out, drawMatrice dm)
             throws TransformerConfigurationException, ParserConfigurationException, TransformerException {
+        // Ottiene una lista temporanea di lettere dalla matrice di gioco
         ArrayList<letter> temp = dm.getBuffer();
+        // Crea una stringa XML per rappresentare il comando di aggiunta alla matrice
         String s = parserStringifier.stringifyCommand(new comando("add", temp));
+        // Invia la stringa XML contenente il comando al server
         out.println(s);
     }
-
+    /**
+     * Invia al server una richiesta di cambio mano durante il gioco.
+     *
+     * @param out L'oggetto PrintWriter per l'output verso il server
+     * @param dm  L'oggetto drawMatrice che gestisce la matrice di gioco
+     * @throws TransformerConfigurationException in caso di configurazione errata del trasformatore XML
+     * @throws ParserConfigurationException      in caso di errore nella configurazione del parser XML
+     * @throws TransformerException             in caso di errore durante la trasformazione XML
+     */
     public static void sendServerSwitchHand(PrintWriter out, drawMatrice dm)
             throws TransformerConfigurationException, ParserConfigurationException, TransformerException {
+        // Crea una lista temporanea vuota per il cambio mano
         ArrayList<letter> temp = new ArrayList<letter>();
+        // Crea una stringa XML per rappresentare il comando di cambio mano
         String s = parserStringifier.stringifyCommand(new comando("switch", temp));
+        // Resettare la mano nel pannello di gioco
         dm.resetMano();
+        // Invia la stringa XML contenente il comando al server
         out.println(s);
     }
-
+    /**
+     * Chiude correttamente il programma, terminando la connessione con il server e i flussi di input/output.
+     *
+     * @param socket Il socket per la connessione con il server
+     * @param in     Il BufferedReader per la lettura dall'input del server
+     * @param out    Il PrintWriter per l'output verso il server
+     * @param delay  Il ritardo in secondi prima di terminare completamente il programma
+     * @throws InterruptedException in caso di interruzione del thread durante la pausa
+     * @throws IOException          in caso di errore di input/output durante la chiusura
+     */
     public static void closeProgram(Socket socket, BufferedReader in, PrintWriter out, int delay)
             throws InterruptedException, IOException {
         socket.close();
@@ -169,6 +216,14 @@ public class Client {
         System.exit(0);
     }
 
+    /**
+     * Chiude correttamente il programma inviando un comando di uscita al server e terminando la connessione.
+     *
+     * @param socket Il socket per la connessione con il server
+     * @param in     Il BufferedReader per la lettura dall'input del server
+     * @param out    Il PrintWriter per l'output verso il server
+     * @throws IOException in caso di errore di input/output durante la chiusura
+     */
     public static void exitProgram(Socket socket, BufferedReader in, PrintWriter out) throws IOException {
         out.println("exit");
         out.close();
