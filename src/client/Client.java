@@ -18,8 +18,18 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
+/**
+ * Classe che implementa la logica del client per il gioco Scarabeo.
+ */
 public class Client {
+    /**
+     * Metodo principale per l'esecuzione del client.
+     *
+     * @param args gli argomenti passati da riga di comando
+     * @throws Exception eccezione generica che può essere lanciata durante l'esecuzione
+     */
     public static void main(String[] args) throws Exception {
+        // Definizione delle costanti per l'indirizzo IP del server e il numero di porta
         final String SERVER_IP = "localhost";
         final int PORT_NUMBER = 666;
         loadingWindow lw = new loadingWindow();
@@ -34,7 +44,15 @@ public class Client {
 
             // Scanner per leggere l'input dell'utente
             //boolean turno = false;
+
+            /**
+            * Legge la risposta dal server e utilizza il parser per ottenere un oggetto comando,
+            * quindi estrae la lista di lettere (mano del giocatore) dall'oggetto comando.
+            */
             ArrayList<letter> mano = parserStringifier.parseCommando(in.readLine()).getL();
+            /**
+            * Crea nuovo oggetto della classe drawMatrice
+            */
             drawMatrice dm = new drawMatrice();
             lw.setVisible(false);
             lw.dispose();
