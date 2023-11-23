@@ -11,7 +11,6 @@ import org.xml.sax.SAXException;
 
 public class sacchettoLettere {
     private ArrayList<letter> sacchetto = new ArrayList<letter>();
-    private ArrayList<letter> values = new ArrayList<letter>();
 
     public sacchettoLettere() throws ParserConfigurationException, IOException, SAXException{
        sacchetto = fileManager.getLetterValues();

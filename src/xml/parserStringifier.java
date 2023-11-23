@@ -1,6 +1,5 @@
 package xml;
 
-import java.io.File;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -23,8 +22,8 @@ import utility.*;
 public class parserStringifier {
   public static String stringifyCommand(comando c)
       throws ParserConfigurationException, TransformerConfigurationException,
-             TransformerException {
-    String s = "";
+      TransformerException {
+
     DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
     Document doc = docBuilder.newDocument();
@@ -40,42 +39,42 @@ public class parserStringifier {
     l = c.getL();
 
     for (letter letter : l) {
-      //Creo un tag letter
+      // Creo un tag letter
       Element elementLetter = doc.createElement("letter");
-      //Creo un altro tag carattere
-      //all'interno creo un text node contenente il carattere
+      // Creo un altro tag carattere
+      // all'interno creo un text node contenente il carattere
       Element characterElement = doc.createElement("character");
       characterElement.appendChild(
           doc.createTextNode(String.valueOf(letter.getCharacter())));
-      //aggiungo in coda al tag letter il tag character
+      // aggiungo in coda al tag letter il tag character
       elementLetter.appendChild(characterElement);
 
-      //svolgo lo stesso procedimento per il valore
-      //creo un tag value
-      //all'interno creo un text node contenente il valore
+      // svolgo lo stesso procedimento per il valore
+      // creo un tag value
+      // all'interno creo un text node contenente il valore
       Element valueElement = doc.createElement("value");
       valueElement.appendChild(
           doc.createTextNode((letter.getValue().toString())));
-      //aggiungo in coda al tag letter il tag value
+      // aggiungo in coda al tag letter il tag value
       elementLetter.appendChild(valueElement);
 
-      //creo un tag punto
+      // creo un tag punto
       Element puntoElement = doc.createElement("punto");
 
-      //aggiungo al tag punto un secondo tag x
+      // aggiungo al tag punto un secondo tag x
       Element xElement = doc.createElement("x");
       xElement.appendChild(doc.createTextNode(letter.getP().getX().toString()));
       puntoElement.appendChild(xElement);
-      //aggiungo al tag punto un terzo tag y
+      // aggiungo al tag punto un terzo tag y
       Element yElement = doc.createElement("y");
       yElement.appendChild(doc.createTextNode(letter.getP().getY().toString()));
       puntoElement.appendChild(yElement);
-      //aggiungo in coda al tag letter il tag punto
+      // aggiungo in coda al tag letter il tag punto
       elementLetter.appendChild(puntoElement);
 
-      //creo un tag player
+      // creo un tag player
       Element playerElement = doc.createElement("player");
-      //aggiungo al tag player un secondo tag player_name
+      // aggiungo al tag player un secondo tag player_name
       Element player_nameElement = doc.createElement("player_name");
       player_nameElement.appendChild(
           doc.createTextNode(letter.getPlayer().getPlayer_name()));
@@ -86,28 +85,7 @@ public class parserStringifier {
       borrowElement.appendChild(
           doc.createTextNode(letter.getBorrowed().toString()));
       elementLetter.appendChild(borrowElement);
-      //aggiungo in coda alla root il tag letter
-      //ESEMPIO
-      //<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-      // <comando>
-      //     <exec>add</exec>
-      //     <letter>
-      //         <character>D</character>
-      //         <value>2</value>
-      //         <punto>
-      //             <x>2</x>
-      //             <y>4</y>
-      //         </punto>
-      //     </letter>
-      //     <letter>
-      //         <character>G</character>
-      //         <value>3</value>
-      //         <punto>
-      //             <x>2</x>
-      //             <y>4</y>
-      //         </punto>
-      //     </letter>
-      // </comando>
+      // aggiungo in coda alla root il tag letter
       rootElement.appendChild(elementLetter);
     }
 
@@ -115,7 +93,7 @@ public class parserStringifier {
     Transformer transformer = transformerFactory.newTransformer();
     DOMSource source = new DOMSource(doc);
     StringWriter stringWriter = new StringWriter();
-    StreamResult result = new StreamResult(stringWriter); 
+    StreamResult result = new StreamResult(stringWriter);
     transformer.transform(source, result);
     return stringWriter.toString();
   }

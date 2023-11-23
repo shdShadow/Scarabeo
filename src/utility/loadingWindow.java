@@ -2,8 +2,6 @@ package utility;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class loadingWindow extends JFrame {
     private Image offScreenImageDrawed = null;
@@ -96,7 +94,6 @@ public class loadingWindow extends JFrame {
         ImageIcon immagineScarabeo = new ImageIcon("./src/utility/scarabeoLogo.png");
         Image image = immagineScarabeo.getImage();
         int logoWidth = immagineScarabeo.getIconWidth();
-        int logoHeight = immagineScarabeo.getIconHeight();
         int xImmagine = (getWidth() - logoWidth) / 2;
         int yImmagine = yScritta2 + rectHeight + 10;
         g.drawImage(image, xImmagine, yImmagine, this);

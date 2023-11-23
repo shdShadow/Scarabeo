@@ -2,40 +2,56 @@ package utility;
 
 import java.util.ArrayList;
 
+/**
+ * La classe 'lettera' rappresenta una lettera in una partita. Contiene
+ * informazioni riguardo al carattere, al suo valore, al giocatore, alla sua
+ * posizione
+ */
 public class letter {
   private char character;
   private Integer value;
-  // Player fields will be set when the card will be randomly drawn
   private player player;
-  // p will be set only when a player send a word.
-  // p specifies the position in the game matrix
   private punto p;
   public boolean borrowed = false;
-  // GETTERS AND SETTERS
 
   /**
    * Returns the character value of this Letter.
    *
    * @return the character value of this Letter
    */
-  public char getCharacter() { return character; }
+  public char getCharacter() {
+    return character;
+  }
 
-  public player getPlayer() { return player; }
+  public player getPlayer() {
+    return player;
+  }
 
-  public Integer getValue() { return value; }
+  public Integer getValue() {
+    return value;
+  }
 
-  public punto getP() { return p; }
+  public punto getP() {
+    return p;
+  }
 
   public void setP(punto p) {
     this.p = p;
-}
-  public void setCharacter(char character) { this.character = character; }
+  }
 
-  public void setPlayer(player player) { this.player = player; }
+  public void setCharacter(char character) {
+    this.character = character;
+  }
 
-  public Boolean getBorrowed() { return borrowed; }
+  public void setPlayer(player player) {
+    this.player = player;
+  }
 
-  //   CONSTRUCTORS
+  public Boolean getBorrowed() {
+    return borrowed;
+  }
+
+  // CONSTRUCTORS
 
   public letter() {
     character = ' ';
@@ -58,14 +74,14 @@ public class letter {
     p = new punto();
   }
 
-  public letter(char _character, Integer _value, punto _p){
+  public letter(char _character, Integer _value, punto _p) {
     character = _character;
     value = _value;
     player = new player();
     p = _p;
   }
 
-  public letter (char _character, Integer _value, player _player, punto _p,Boolean _borrowed){
+  public letter(char _character, Integer _value, player _player, punto _p, Boolean _borrowed) {
     character = _character;
     value = _value;
     player = _player;
@@ -73,36 +89,45 @@ public class letter {
     p = _p;
   }
 
-  public letter(char _character, punto _p){
+  public letter(char _character, punto _p) {
     character = _character;
     value = 0;
     player = new player();
     p = _p;
   }
 
-  public letter(char _character, punto _p, player _player){
+  public letter(char _character, punto _p, player _player) {
     character = _character;
     value = 0;
     player = _player;
     p = _p;
   }
 
-  // METHODS
-
+  /**
+   * Returns a string representation of the `letter` object.
+   *
+   * @return a string representation of the `letter` object
+   */
   public String toString() {
     String s = "";
     s += "Char: " + character + " Value: " + value +
-         " Player: " + player.getPlayer_name();
+        " Player: " + player.getPlayer_name();
     return s;
   }
 
-  public static String returnWord(ArrayList<letter> l){
+  /**
+   * Returns a word formed by concatenating the characters of the given list of
+   * letters.
+   *
+   * @param l the list of letters
+   * @return a word formed by concatenating the characters of the given list of
+   *         letters
+   */
+  public static String returnWord(ArrayList<letter> l) {
     String s = "";
     for (letter letter : l) {
       s += letter.getCharacter();
     }
     return s;
   }
-
-
 }

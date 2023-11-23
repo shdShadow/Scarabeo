@@ -9,19 +9,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.net.CookieManager;
 import java.util.ArrayList;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.ArrayList;
 import javax.swing.JFrame;
 
 public class drawMatrice extends JFrame implements KeyListener {
@@ -77,7 +67,7 @@ public class drawMatrice extends JFrame implements KeyListener {
     }
 
     private void finestraChiusa(){
-        System.out.println("Palle");
+        
     }
 
     private void addToMatrix(ArrayList<letter> list) {
@@ -144,7 +134,6 @@ public class drawMatrice extends JFrame implements KeyListener {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, CELL_SIZE / 2));
         FontMetrics fm = g.getFontMetrics();
-        int labelWidth = fm.stringWidth("Mano");
         int labelHeight = fm.getHeight();
         int labelX = CELL_SIZE * 2 + CELL_SIZE * 17;
         int labelY = CELL_SIZE * 2;
@@ -169,7 +158,6 @@ public class drawMatrice extends JFrame implements KeyListener {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, CELL_SIZE / 2));
         FontMetrics fmLabel = g.getFontMetrics();
-        int labelWidthNotifiche = fmLabel.stringWidth("Notifiche");
         int labelHeightNotifiche = fmLabel.getHeight();
         int labelXNotifiche = CELL_SIZE * 2 + CELL_SIZE * 17;
         int labelYNotifiche = CELL_SIZE * 5 + labelHeightNotifiche;
@@ -195,7 +183,6 @@ public class drawMatrice extends JFrame implements KeyListener {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, CELL_SIZE / 2));
         FontMetrics fmPunteggioLabel = g.getFontMetrics();
-        int labelWidthPunteggio = fmPunteggioLabel.stringWidth("Punteggio:");
         int labelHeightPunteggio = fmPunteggioLabel.getHeight();
         int labelXPunteggio = CELL_SIZE * 2 + CELL_SIZE * 17;
         int labelYPunteggio = CELL_SIZE * 7 + labelHeightPunteggio;
@@ -204,7 +191,6 @@ public class drawMatrice extends JFrame implements KeyListener {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, CELL_SIZE / 2));
         FontMetrics fmParolaCorrente = g.getFontMetrics();
-        int labelWidthParolaCorrente = fmParolaCorrente.stringWidth("Parola corrente:");
         int labelHeightParolaCorrente = fmParolaCorrente.getHeight();
         int labelXParolaCorrente = CELL_SIZE * 2 + CELL_SIZE * 17;
         int labelYParolaCorrente = CELL_SIZE * 9 + labelHeightParolaCorrente;
@@ -252,19 +238,13 @@ public class drawMatrice extends JFrame implements KeyListener {
 
         // Check if the key pressed is the ESC key
         if (keyCode == KeyEvent.VK_ESCAPE) {
-            // Perform the desired action when the ESC key is pressed
-            // For example, close the application or reset the game
-            // Replace the code below with your implementation.
             undoPlayerMove();
         }
 
-        // Check if the key pressed is a letter in the alphabet
         char keyChar = e.getKeyChar();
         if (Character.isLetter(keyChar)) {
             if (status.equals("play")) {
                 char uppercaseChar = Character.toUpperCase(keyChar);
-                // Do something with the uppercaseChar
-                // For example, add it to the buffer
                 int x = cursorPosition.getX();
                 int y = cursorPosition.getY();
                 letter l = new letter(uppercaseChar, new punto(x, y), new player(player_name));
@@ -331,10 +311,6 @@ public class drawMatrice extends JFrame implements KeyListener {
     }
 
     private char getLetterAtPosition(int row, int col) {
-        // TODO: Implement the logic to get the letter at the given position
-        // You can use the row and col values to access the corresponding punto object
-        // and retrieve the letter from it.
-        // Replace the return statement below with your implementation.
         if (gameMatrix[row][col] != null) {
             return gameMatrix[row][col].getCharacter();
         } else {
@@ -369,12 +345,10 @@ public class drawMatrice extends JFrame implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        // Implement your logic for key released event
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-        // Implement your logic for key typed event
     }
 
     public void setMano(ArrayList<letter> mano) {

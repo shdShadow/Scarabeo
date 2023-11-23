@@ -46,6 +46,7 @@ public class Server {
             outs[0].println(parserStringifier.stringifyCommand(new comando("hand", mano1)));
             outs[1].println(parserStringifier.stringifyCommand(new comando("hand", mano2)));
             comando c = new comando();
+            boolean end = false;
             while (true) {
 
                 // Lettura del messaggio inviato dal client
@@ -61,13 +62,23 @@ public class Server {
 
                 // Verifica se il client ha chiuso la connessione
                 if (clientMessage.equals("exit")) {
-                    System.out.println("Il client ha chiuso la connessione.");
-                    break;
+                    for (int i = 0; i < outs.length; i++) {
+                        if (outs[i] != out) {
+                            outs[i].println("exit");
+                        }
+                    }
+                    for (int i = 0; i < listSocket.length; i++) {
+                        ins[i].close();
+                        outs[i].close();
+                        listSocket[i].close();
+                    }
+                    end = true;
+                    serverSocket.close();
+                    
                 }
 
-                // System.out.println("Messaggio ricevuto dal client: " + turno + " "
-                // +clientMessage);
-                String response[] = new String[2];
+                if (!end){
+                    String response[] = new String[2];
                 c = parserStringifier.parseCommando(clientMessage);
                 if (c.getExec().equals("switch")) {
                     ArrayList<letter> hand = sl.getRandomLetters(8, turno % 2);
@@ -117,15 +128,11 @@ public class Server {
                             outs[i].println("lose");
                         }
                     }
+                    closeServer(serverSocket, ins, outs, listSocket);
                 }
+                }
+                
 
-            }
-
-            // Chiusura delle risorse
-            for (int i = 0; i < listSocket.length; i++) {
-                ins[i].close();
-                outs[i].close();
-                listSocket[i].close();
             }
 
         } catch (IOException e) {
@@ -141,5 +148,15 @@ public class Server {
             }
         }
         return index;
+    }
+
+    public static void closeServer(ServerSocket serverSocket, BufferedReader[] ins, PrintWriter[] outs, Socket[] listSocket)
+            throws IOException {
+        for (int i = 0; i < listSocket.length; i++) {
+            ins[i].close();
+            outs[i].close();
+            listSocket[i].close();
+        }
+        serverSocket.close();
     }
 }
