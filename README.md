@@ -1,7 +1,7 @@
 # Scarabeo
 ![Screenshot-Overview](https://github.com/shdShadow/Scarabeo/assets/112032211/c38a128f-6195-4781-aa10-9e9abec99171)
 
-## Introduzione!
+## Introduzione
 Questa e' una ricostruzione del gioco da tavolo "Scarabeo" scritta in Java e leggermente rivisitata.
 Il gioco viene gestito da un server il quale risponde a seguito dei messaggi inviati dai client. Il limite minimo e massimo di giocatori, pertanto di client, in questo momento e' limitato a 2.
 ## Installazione
@@ -11,7 +11,7 @@ git clone https://github.com/shdShadow/Scarabeo
 cd Scarabeo\
 code .
 ```
-E' possibile utilizzare qualsiasi editor di codice, l'importante e' che il progetto venga aperta alla sua root e non nella cartella src\
+E' possibile utilizzare qualsiasi editor di codice, l'importante e' che il progetto venga aperto alla sua root e non nella cartella src\
 ### Da github
 - Fai click sul pulsante "<> Code"
 - Seleziona dal menu la voce "Download Zip"
@@ -34,3 +34,20 @@ Alcune regole vengono direttamente dal gioco originale, altre invece sono state 
 - Esc        -> Annullamento della giocata attuale
 ## Personalizzazione
 Alcuni settaggi come il punteggio massimo, la dimensione delle caselle disegnate,... sono modificabili tramite il file settings.java
+## Future implementazioni
+- Miglioramenti alla grafica di vincita/perdita
+- Miglioramenti al sistema di chiusura delle risorse e del programma
+- Implementazione di un controllo per parole multiple.
+- Implementazione di controllo di parola gia' scritta
+- Implementazione di controllo automatico di estensione di una parola gia' presente. Esempio:
+    ```
+          M                            M
+          A                            A
+          T          ---->             T    
+    G A T T O                    G A T T O
+          O                            O
+                                       N
+                                       E
+    ```
+    Al momento per scrivere la parola 'mattone' e' necessario riscrivere la parola per intero, compreso quindi 'matto'
+
