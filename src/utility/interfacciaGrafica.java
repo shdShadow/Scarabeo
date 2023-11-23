@@ -21,7 +21,13 @@ public class interfacciaGrafica extends JFrame {
 
         // Creazione di un pannello personalizzato per la visualizzazione dei componenti
         JPanel panel = new JPanel() {
+            /**
+            * Variabile per il testo che lampeggia.
+            */
             String blinkingText = "In attesa che entrambi i giocatori siano pronti...";
+            /**
+            * Variabile booleana per la visibilità del testo lampeggiante.
+            */
             boolean visible = true;
 
             {
@@ -54,7 +60,13 @@ public class interfacciaGrafica extends JFrame {
                 g.setFont(new Font("Arial", Font.PLAIN, 18));
                 FontMetrics fontMetrics = g.getFontMetrics();
                 int stringWidth = fontMetrics.stringWidth(blinkingText);
+                /**
+                * Variabile intera per le coordinate x della scritta lampeggiante
+                */
                 int xBlinkingText = (getWidth() - stringWidth) / 2;
+                /**
+                * Variabile intera per le coordinate y della scritta lampeggiante
+                */
                 int yBlinkingText = getHeight() - 50;
 
                 if (visible) {
@@ -62,16 +74,31 @@ public class interfacciaGrafica extends JFrame {
                 }
 
                 // Disegno del titolo "SCARABEO"
+                /**
+                * Variabile String che contiene la scritta SCARABEO
+                */
                 String scritta1 = "SCARABEO";
                 g.setColor(Color.WHITE);
                 g.setFont(new Font("Arial", Font.BOLD, 30));
+                /**
+                * Variabile FontMetrics per ottenere informazioni sul disegno della scritta SCARABEO
+                */
                 FontMetrics fontMetricsScritta1 = g.getFontMetrics();
                 int stringWidthTitolo = fontMetricsScritta1.stringWidth(scritta1);
+                 /**
+                * Variabile intera per le coordinate x della scritta SCARABEO
+                */
                 int xScritta1 = (getWidth() - stringWidthTitolo) / 2;
+                /**
+                * Variabile intera per le coordinate Y della scritta SCARABEO
+                */
                 int yScritta1 = getHeight() / 2 - 120;
                 g.drawString(scritta1, xScritta1, yScritta1);
 
                 // Disegno della descrizione del gioco
+                 /**
+                * Variabile String che contiene la scritta L'unico gioco di parole con lo scarabeo
+                */
                 String scritta2 = "L'unico gioco di parole con lo scarabeo";
                 g.setColor(Color.RED);
                 FontMetrics fontMetricsScritta2 = g.getFontMetrics();
