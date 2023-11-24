@@ -1,6 +1,7 @@
 package utility;
 
 public class player {
+    
     private String player_name;
     private Integer total_points;
 

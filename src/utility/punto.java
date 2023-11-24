@@ -1,7 +1,14 @@
 package utility;
 public class punto {
-  //Posizioni nella matrice di gioco
+  // ATTRIBUTI
+
+    /**
+     * attributo contenente le coordinate x del punto
+     */
   private Integer x;
+  /**
+   * attributo contenente le coordinate y del punto
+  */
   private Integer y;
   //COSTRUTTORI
   public punto() {
