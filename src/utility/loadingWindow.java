@@ -2,8 +2,13 @@ package utility;
 
 import javax.swing.*;
 import java.awt.*;
-
+/**
+ * Classe che implementa un'interfaccia grafica per la creazione
+ * di una schermata di caricamento contente un titolo, una breve
+ * descrizione ed un'immagine del logo del gioco Scarabeo
+ */
 public class loadingWindow extends JFrame {
+
     private Image offScreenImageDrawed = null;
     private Graphics offScreenGraphicsDrawed = null;
 
@@ -67,36 +72,87 @@ public class loadingWindow extends JFrame {
             g.drawString(blinkingText, xBlinkingText, yBlinkingText);
         }
 
-        // Disegna la scritta "SCARABEO"
-        String scritta1 = "SCARABEO";
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 30));
-        FontMetrics fontMetricsScritta1 = g.getFontMetrics();
-        int stringWidthTitolo = fontMetricsScritta1.stringWidth(scritta1);
-        int xScritta1 = (getWidth() - stringWidthTitolo) / 2;
-        int yScritta1 = getHeight() / 2 - 160;
-        g.drawString(scritta1, xScritta1, yScritta1);
+       // Disegno del titolo "SCARABEO"
+                /**
+                * Variabile String che contiene la scritta SCARABEO
+                */
+                String scritta1 = "SCARABEO";
+                g.setColor(Color.WHITE);
+                g.setFont(new Font("Arial", Font.BOLD, 30));
+                /**
+                * Variabile FontMetrics per ottenere informazioni sul disegno della scritta SCARABEO
+                */
+                FontMetrics fontMetricsScritta1 = g.getFontMetrics();
+                /**
+                * Variabile intera per calcolare larghezza in pixel
+                */
+                int stringWidthTitolo = fontMetricsScritta1.stringWidth(scritta1);
+                /**
+                * Variabile intera per le coordinate x della scritta SCARABEO
+                */
+                int xScritta1 = (getWidth() - stringWidthTitolo) / 2;
+                /**
+                * Variabile intera per le coordinate Y della scritta SCARABEO
+                */
+                int yScritta1 = getHeight() / 2 - 160;
+                g.drawString(scritta1, xScritta1, yScritta1);
 
-        // Disegna la seconda scritta "L'unico gioco di parole con lo scarabeo"
-        String scritta2 = "L'unico gioco di parole con lo scarabeo";
-        g.setColor(Color.RED);
-        FontMetrics fontMetricsScritta2 = g.getFontMetrics();
-        int stringWidthScritta2 = fontMetricsScritta2.stringWidth(scritta2);
-        int xScritta2 = (getWidth() - stringWidthScritta2) / 2;
-        int yScritta2 = getHeight() / 2 - 20;
-        int rectWidth = stringWidthScritta2 + 20;
-        int rectHeight = fontMetricsScritta2.getHeight() + 10;
-        g.fillRect(xScritta2 - 10, yScritta2 - 30, rectWidth, rectHeight);
-        g.setColor(Color.WHITE);
-        g.drawString(scritta2, xScritta2, yScritta2);
 
-        // Disegna l'immagine dello scarabeo
-        ImageIcon immagineScarabeo = new ImageIcon("./src/utility/scarabeoLogo.png");
-        Image image = immagineScarabeo.getImage();
-        int logoWidth = immagineScarabeo.getIconWidth();
-        int xImmagine = (getWidth() - logoWidth) / 2;
-        int yImmagine = yScritta2 + rectHeight + 10;
-        g.drawImage(image, xImmagine, yImmagine, this);
+
+                // Disegno della scritta "L'unico gioco di parole con lo scarabeo"
+               
+                /**
+                * Variabile String che contiene la scritta "L'unico gioco di parole con lo scarabeo"
+                */
+                String scritta2 = "L'unico gioco di parole con lo scarabeo";
+                g.setColor(Color.RED);
+                /**
+                * Variabile FontMetrics per ottenere informazioni sul disegno della scritta "L'unico gioco di parole con lo scarabeo"
+                */
+                FontMetrics fontMetricsScritta2 = g.getFontMetrics();
+                /**
+                * Variabile intera per calcolare larghezza in pixel
+                */
+                int stringWidthScritta2 = fontMetricsScritta2.stringWidth(scritta2);
+                /**
+                * Variabile intera per le coordinate x della scritta "L'unico gioco di parole con lo scarabeo"
+                */
+                int xScritta2 = (getWidth() - stringWidthScritta2) / 2;
+                /**
+                * Variabile intera per le coordinate y della scritta "L'unico gioco di parole con lo scarabeo"
+                */
+                int yScritta2 = getHeight() / 2 - 20;
+                /**
+                * Variabile intera per restituire la larghezza in pixel
+                */
+                int rectWidth = stringWidthScritta2 + 20;
+                /**
+                * Variabile intera per restituire la altezza in pixel
+                */
+                int rectHeight = fontMetricsScritta2.getHeight() + 10;
+                g.fillRect(xScritta2 - 10, yScritta2 - 30, rectWidth, rectHeight);
+                g.setColor(Color.WHITE);
+                g.drawString(scritta2, xScritta2, yScritta2);
+
+                // Disegno del logo dello scarabeo
+                ImageIcon immagineScarabeo = new ImageIcon("./src/utility/scarabeoLogo.png");
+                /**
+                * Variabile Image che riceve l'immagine
+                */
+                Image image = immagineScarabeo.getImage();
+                /**
+                * Variabile intera che contiene la larghezza dell'immagine
+                */
+                int logoWidth = immagineScarabeo.getIconWidth();
+                /**
+                * Variabile intera per le coordinate x dell'immagine
+                */
+                int xImmagine = (getWidth() - logoWidth) / 2;
+                /**
+                * Variabile intera per le coordinate y dell'immagine
+                */
+                int yImmagine = yScritta2 + rectHeight + 10;
+                g.drawImage(image, xImmagine, yImmagine, this);
 
     };
 

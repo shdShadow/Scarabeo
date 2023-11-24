@@ -6,7 +6,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Classe che implementa un'interfaccia grafica per il gioco Scarabeo.
+ * Classe che implementa un'interfaccia grafica per la creazione
+ * di una schermata di caricamento contente un titolo, una breve
+ * descrizione ed un'immagine del logo del gioco Scarabeo
  */
 public class interfacciaGrafica extends JFrame {
 
