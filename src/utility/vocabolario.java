@@ -8,13 +8,24 @@ import java.util.ArrayList;
  * Classe contenente tutte le parole del vocabolario italiano
  */
 public class vocabolario {
-  //Array di stringhe nel quale verrano caricate le parole di un vocabolario preso da Internet
+  
+  /**
+   * ArrayList che conterra' le parole del vocabolario
+   */
   private ArrayList<String> parole = new ArrayList<String>();
 
+  /**
+   * Costruttore della classe vocabolario non parametrico
+   */
   public vocabolario(){
     this.parole = caricaVocabolario();
   }
-  //Ottiene l'elenco delle parole di un vocabolario preso da internet
+  
+  /**
+   * Carica il vocabolario da un file di testo che rappresenta il vocabolario
+   * Il vocabolario e' stato preso da un' altra repository su github pertanto potrebbe non essere aggiornato e non contenere tutte le parole
+   * @return ArrayList di stringhe contenente tutte le parole del vocabolario
+   */
   private ArrayList<String> caricaVocabolario() {
     ArrayList<String> tmp = new ArrayList<String>();
     try (BufferedReader br =
@@ -34,9 +45,14 @@ public class vocabolario {
     }
     return tmp;
   }
-  //Ricerca una parola all'interno del vocabolario
-  //La ricerca e' svolta in modo sequenziale in quanto il tempo impiegato non e' troppo elevato
-  //E' possibile velocizzarlo implementando una ricerca binaria
+
+  /**
+   * Cerca una parola all'interno del vocabolario
+   * La ricerca e' stata implementata in modo sequenziale in quanto il tempo impiegato non e' troppo elevato
+   * E' possibile velocizzarlo implementando una ricerca binaria
+   * @param parola_da_cercare La parola da cercare nel vocabolario
+   * @return true se la parola e' presente nel vocabolario, false altrimenti
+   */
   public boolean cercaParola(String parola_da_cercare){
       //variabile Booleana che diventerà true quando la parola cercata verrà trovata
       boolean found = false;

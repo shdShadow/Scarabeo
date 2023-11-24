@@ -17,10 +17,13 @@ u --> UC4
 rectangle Server{
     usecase "Add it to game matrix" as US1
     usecase "Calculate points" as US2
+    usecase "Send a new hand back" as US3
+
 }
 
 UC1 <--> US1
 UC2 <--> US2
+UC3 <--> US3
 
 
 

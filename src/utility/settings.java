@@ -1,5 +1,7 @@
 package utility;
 
+import java.awt.Color;
+
 /**
  * Classe contenente costanti utilizzate nel gioco Scarabeo.
  */
@@ -12,12 +14,12 @@ public class settings {
     /**
      * Numero di porta per la connessione al server.
      */
-    public static final int port = 666;
+    public static final int ServerPort = 666;
 
     /**
      * Indirizzo IP del server.
      */
-    public static final String ip = "127.0.0.1";
+    public static final String ServerIp = "127.0.0.1";
 
     /**
      * Larghezza della finestra di caricamento.
@@ -53,4 +55,10 @@ public class settings {
      * Altezza della finestra di gioco.
      */
     public static final int WINDOW_HEIGHT = 720;
+
+    /**
+     * Colore di sfondo del tabellone.
+     */
+    public static Color bgColor = new Color(27, 111, 14);
+    
 }

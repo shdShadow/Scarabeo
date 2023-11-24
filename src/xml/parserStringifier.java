@@ -19,7 +19,23 @@ import org.xml.sax.InputSource;
 
 import utility.*;
 
+/**
+ * Classe che si occupa dello "stringify" e del "parse" dei comandi inviati tra
+ * client e server
+ */
 public class parserStringifier {
+  /**
+   * Metodo che si occupa dello "stringify" un comando
+   * 
+   * @param c L'oggetto comando da trasformare in xml
+   * @return Una stringa contenente il comando codificato in xml
+   * @throws ParserConfigurationException      Se il parser non puo' essere
+   *                                           configurato.
+   * @throws TransformerConfigurationException Se il transformer non puo' essere
+   *                                           configurato.
+   * @throws TransformerException              Se si verifica un errore di
+   *                                           trasformazione.
+   */
   public static String stringifyCommand(comando c)
       throws ParserConfigurationException, TransformerConfigurationException,
       TransformerException {
@@ -28,14 +44,14 @@ public class parserStringifier {
     DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
     Document doc = docBuilder.newDocument();
     ArrayList<letter> l = new ArrayList<letter>();
-    // root
+    // Nodo radice del documento
     Element rootElement = doc.createElement("comando");
     doc.appendChild(rootElement);
-    // elemento exec
+    // Elemento exec
     Element execElement = doc.createElement("exec");
     execElement.appendChild(doc.createTextNode(c.getExec()));
     rootElement.appendChild(execElement);
-    // elemento letter
+    // Elemento letter
     l = c.getL();
 
     for (letter letter : l) {
@@ -98,17 +114,29 @@ public class parserStringifier {
     return stringWriter.toString();
   }
 
+  /**
+   * Metodo che si occupa del "parse" di un comando
+   * 
+   * @param client_command La stringa contenente il comando da trasformare in
+   *                       oggetto comando
+   * @return L'oggetto comando
+   * @throws Exception Se si verifica un errore di parsing.
+   */
   public static comando parseCommando(String client_command) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder = factory.newDocumentBuilder();
     InputSource is = new InputSource(new StringReader(client_command));
     Document doc = builder.parse(is);
-
+    // Nodo radice del documento
     Element root = doc.getDocumentElement();
+    // Ottengo il contenuto del tag exec
     String exec = root.getElementsByTagName("exec").item(0).getTextContent();
-
+    // Ottengo la lista dei tag letter
     NodeList letterNodes = root.getElementsByTagName("letter");
     ArrayList<letter> letters = new ArrayList<letter>();
+    // Per ogni tag letter creo un oggetto lettera e lo aggiungo all'arraylist
+    // Estraggo il carattere, il valore, le coordinate, il nome del giocatore e se
+    // la lettera e' stata presa in prestito
     for (int i = 0; i < letterNodes.getLength(); i++) {
       Element letterElement = (Element) letterNodes.item(i);
       char character = letterElement.getElementsByTagName("character").item(0).getTextContent().charAt(0);
@@ -121,7 +149,7 @@ public class parserStringifier {
       letter l = new letter(character, value, new player(playerName), p, borrowed);
       letters.add(l);
     }
-
+    // Creo l'oggetto comando e lo ritorno
     comando c = new comando(exec, letters);
     return c;
   }

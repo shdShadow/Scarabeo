@@ -30,13 +30,11 @@ public class Client {
      */
     public static void main(String[] args) throws Exception {
         // Definizione delle costanti per l'indirizzo IP del server e il numero di porta
-        final String SERVER_IP = "localhost";
-        final int PORT_NUMBER = 666;
         loadingWindow lw = new loadingWindow();
 
         try {
             // Connessione al server
-            Socket socket = new Socket(SERVER_IP, PORT_NUMBER);
+            Socket socket = new Socket(settings.ServerIp, settings.ServerPort);
             lw.setVisible(true);
             // Creazione degli stream di input e output
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -51,7 +49,7 @@ public class Client {
             lw.setVisible(false);
             lw.dispose();
             dm.setVisible(true);
-            dm.setSize(1280, 720);
+            dm.setSize(settings.WINDOW_WIDTH, settings.WINDOW_HEIGHT);
             dm.setTitle("SCARABEO");
             dm.setMano(mano);
             dm.repaint();

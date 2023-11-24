@@ -177,7 +177,7 @@ public class drawMatrice extends JFrame implements KeyListener {
      */
     public void renderOffScreen(Graphics g) {
         // Imposta lo sfondo della finestra
-        g.setColor(new Color(27, 111, 14));
+        g.setColor(settings.bgColor);
         g.fillRect(0, 0, getWidth(), getHeight());
         // Offset sul lato sinistro
         int xOffset = settings.CELL_SIZE;
@@ -193,14 +193,14 @@ public class drawMatrice extends JFrame implements KeyListener {
                 // posizione del cursore
                 // Se e' uguale, disegno la cella in rosso
                 if (j == cursorPosition.getX() && i == cursorPosition.getY()) {
-                    g.setColor(new Color(27, 111, 14));
+                    g.setColor(settings.bgColor);
                     g.fillRect(x, y, settings.CELL_SIZE, settings.CELL_SIZE);
                     g.setColor(Color.RED);
                     g.drawRect(x, y, settings.CELL_SIZE, settings.CELL_SIZE);
                 }
                 // Altrimenti la disegno bianca come tutte le altre
                 else {
-                    g.setColor(new Color(27, 111, 14));
+                    g.setColor(settings.bgColor);
                     g.fillRect(x, y, settings.CELL_SIZE, settings.CELL_SIZE);
                     g.setColor(Color.WHITE);
                     g.drawRect(x, y, settings.CELL_SIZE, settings.CELL_SIZE);
