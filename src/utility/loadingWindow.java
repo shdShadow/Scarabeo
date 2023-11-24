@@ -9,22 +9,40 @@ import java.awt.*;
  */
 public class loadingWindow extends JFrame {
 
-    private Image offScreenImageDrawed = null;
-    private Graphics offScreenGraphicsDrawed = null;
+     // ATTRIBUTI
 
+    /**
+    * Immagine off-screen utilizzata per il rendering 
+    */
+    private Image offScreenImageDrawed = null;
+    /**
+    * Oggetto Graphics per l'immagine off-screen
+   */
+    private Graphics offScreenGraphicsDrawed = null;
+    /**
+     * Costruttore della finestra di caricamento.
+     * Imposta il titolo, le dimensioni, l'operazione di chiusura,
+     * la posizione, e la non ridimensionabilità della finestra.
+     */
     public loadingWindow() {
-        setTitle("Scarabeo");
-        setSize(settings.loadintWidth, settings.loadingHeight);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setResizable(false);
+        setTitle("Scarabeo"); // Imposta il titolo della finestra
+        setSize(settings.loadintWidth, settings.loadingHeight); // Imposta le dimensioni della finestra
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Imposta l'operazione di chiusura
+        setLocationRelativeTo(null); // Imposta la posizione al centro dello schermo
+        setResizable(false); // Impedisce il ridimensionamento della finestra
     }
 
+    /**
+     * Metodo paint per il disegno grafico.
+     *
+     * @param g Oggetto Graphics utilizzato per il disegno
+     */
     @Override
     public void paint(Graphics g) {
+        // Ottiene le dimensioni della finestra
         final Dimension d = getSize();
         if (offScreenImageDrawed == null) {
-            // Double-buffer: clear the offscreen image.
+            // Double-buffering: pulisce l'immagine off-screen
             offScreenImageDrawed = createImage(d.width, d.height);
         }
         offScreenGraphicsDrawed = offScreenImageDrawed.getGraphics();
@@ -36,7 +54,11 @@ public class loadingWindow extends JFrame {
         renderOffScreen(offScreenImageDrawed.getGraphics());
         g.drawImage(offScreenImageDrawed, 0, 0, null);
     }
-
+    /**
+     * Metodo per il rendering sull'immagine off-screen.
+     *
+     * @param g Oggetto Graphics utilizzato per il disegno sull'immagine off-screen
+     */
     public void renderOffScreen(Graphics g) {
 
         String blinkingText = "In attesa che entrambi i giocatori siano pronti...";
