@@ -1,0 +1,181 @@
+@startuml class_diagram
+class letter{
+    -char character
+    -Integer value
+    -player player
+    -punto p
+    +boolean borrowed
+    +char getCharacter()
+    +player getPlayer()
+    +Integer getValue()
+    +punto getP()
+    +boolean getBorrowed()
+    +void setP(punto p)
+    +void setCharacter(char c)
+    +void setPlayer(player p)
+    +letter()
+    +letter(char _c, Integer _value, player _player, punto _p)
+    +letter(char _c, punto _p, player _player)
+    +{static} returnWord(ArrayList<letter> l)
+}
+class comando{
+    -String exec
+    -ArrayList<letter> l
+    +comando()
+    +comando(String _exec, ArrayList<letter> _l)
+    +ArrayList<letter> getL()
+    +String getExec()
+    +void setL(ArrayList<letter> l)
+    +void setExec(String exec)
+}
+
+class drawMatrice{
+    -Image offScreenImageDrawed
+    -Graphics offScreenGraphicsDrawed
+    -ArrayList<letter> buffer
+    -ArrayList<letter> mano
+    -String player_name
+    -String punteggio
+    -letter[][] gameMatrix
+    -punto cursorPosition
+    -String mex
+    -String status
+    +drawMatrice()
+    +addToBuffer(letter l)
+    +addToMatrix(ArrayList<letter> list)
+    +void paint(final Graphics g)
+    +void renderOffScreen(Graphics g)
+    -void undoPlayerMove()
+    +void KeyPressed(KeyEvent e)
+    +char getLetterAtPosition(int row, int col)
+    -boolean controllaSeCasellaOccupata(letter l)
+    -boolean controllaSeInMano()
+    -void removeFromCoda(letter l)
+    +void setMano(ArrayList<letter> mano)
+    +void setStatus(String status)
+    +void setMex(String[] s)
+    +void setMex(String s)
+    +void setPlayer_name(String player_name)
+    +void setPoints(Integer points)
+    +void UpdateMatrix(ArrayList<letter> list)
+    +void addToMano(ArrayList<letter> list)
+    +boolean checkIfCellWritable(letter l)
+    +void resetMano()
+}
+
+class loadingWindow{
+    -Image offScreenGraphicsDrawed
+    -Graphics offScreenGraphicsDrawed
+    +loadingWindow()
+    +void paint(final Graphics g)
+    +void renderOffScreen(Graphics g)
+}
+
+class player{
+    -String player_name
+    -Integer total_points
+    +Integer getTotal_points()
+    +String getPlayer_name()
+    +player()
+    +player(String _player_name)
+}
+
+class punto{
+    -Integer x
+    -Integer y
+    +punto()
+    +punto(Integer _x, Integer _y)
+    +Integer getX()
+    +Integer getY()
+    +void setX(Integer x)
+    +void setY(Integer y)
+}
+class sacchettoLettere{
+    -ArrayList<letter> sacchetto
+    +sacchettoLettere()
+    +ArrayList<letter> getRandomLetters(int n, int player)
+}
+
+class settings{
+    +{static} Integer max_punteggio
+    +{static} int port
+    +{static} String ip
+    +{static} int loadingWidth
+    +{static} int loadingHeight
+    +{static} int MATRIX_SIZE
+    +{static} int CELL_SIZE
+    +{static} int GRID_SIZE
+    +{static} int WINDOW_WIDTH
+    +{static} int WINDOW_HEIGHT
+}
+
+class vocabolario{
+    -ArrayList<String> parole
+    +vocabolario()
+    -ArrayList<String> caricaVocabolario()
+    +boolean cercaParola(String parola_da_cercare)
+}
+
+class fileManager{
+    +{static} ArrayList<letter> getLetterValues()
+}
+class parserStringifier{
+    +{static} String stringifyCommand(comando c)
+    +{static} comando parseCommand(String s)
+}
+class checkGiocata{
+    -{static} vocabolario vocabolario
+    +{static}String[] checkParola(ArrayList<letter> letters, int giocate)
+    -{static}boolean checkIfOrizzOrVert(ArrayList<letter> letters)
+    -{static}String calcolaPunteggio(ArrayList<letter> l)
+}
+class Client{
+    +{static}void main(String[] args)
+    +{static}void sendServer(PrintWriter out, drawMatrice dm)
+    +{static}void sendServerSwitchHand(PrintWriter out, drawMatrice dm)
+    +{static}void closeProgram(Socket socket, BufferedReader in, PrintWriter out, int delay)
+    +{static}void exitProgram(Socket socket, BufferedReader in, PrintWriter out)
+}
+
+class server{
+    +{static}void main(String[] args)
+    +{static}int checkWinner(int[] points)
+    +{static}void closeServer(ServerSocket serverSocket, BufferedReader[] ins, PrintWriter[] outs, Socket[] listSocket)
+}
+
+Client --> settings
+Client --> loadingWindow
+Client --> letter
+Client --> drawMatrice
+Client --> parserStringifier
+Client --> comando
+
+checkGiocata --> vocabolario
+checkGiocata --> letter
+
+server --> settings
+server --> sacchettoLettere
+server --> letter
+server --> comando
+server --> parserStringifier
+server --> checkGiocata
+
+comando --> letter
+
+drawMatrice --> letter
+drawMatrice --> punto
+
+letter --> punto
+letter --> player
+
+sacchettoLettere --> letter
+sacchettoLettere --> fileManager
+sacchettoLettere --> player
+
+fileManager --> letter
+
+parserStringifier --> letter
+parserStringifier --> comando
+parserStringifier --> punto
+parserStringifier --> player
+@enduml
