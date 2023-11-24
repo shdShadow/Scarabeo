@@ -1,0 +1,49 @@
+@startuml
+actor Player1 as P1
+actor Player2 as P2
+participant client as Client
+participant server as Server
+
+P1 -> Client: Avvia gioco
+activate Client
+
+Client -> Server: Richiesta connessione
+activate Server
+
+Server --> Client: Conferma connessione
+deactivate Server
+
+
+Server --> Client: Inizio partita
+deactivate Server
+
+loop Giocata fino alla fine della partita(20 pt min)
+    P1 -> Client: Parola inserita
+    activate Client
+
+    Client -> Server: Invia parola
+    activate Server
+
+    Server -> Client: Valutazione parola
+    deactivate Server
+
+    Client -> P1: Risultato della valutazione
+    deactivate Client
+end
+
+P1 -> Client: Fine partita
+activate Client
+
+Client -> Server: Richiesta di fine partita
+activate Server
+
+Server --> Client: Risultati finali
+deactivate Server
+
+Client -> P1: Risultati finali
+deactivate Client
+
+P1 -> Client: Termina gioco
+deactivate Client
+
+@enduml

@@ -5,10 +5,15 @@ actor "User" as u
 rectangle Client{
     usecase "Insert a word" as UC1
     usecase "Confirm word" as UC2
-
+    usecase "Change Hand" as UC3
+    usecase "Undo Move" as UC4
 }
+
 u --> UC1
 u --> UC2
+u --> UC3
+u --> UC4
+
 rectangle Server{
     usecase "Add it to game matrix" as US1
     usecase "Calculate points" as US2
@@ -16,5 +21,7 @@ rectangle Server{
 
 UC1 <--> US1
 UC2 <--> US2
+
+UC3 --> UC4 : <<include>>
 
 @enduml
