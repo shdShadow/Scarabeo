@@ -37,6 +37,8 @@ Alcuni settaggi come il punteggio massimo, la dimensione delle caselle disegnate
 ## Future implementazioni
 - Miglioramenti alla grafica di vincita/perdita
 - Miglioramenti al sistema di chiusura delle risorse e del programma
+- Aumento numero di player
+- Creazione di lobby per la gestione di piu' partite differenti
 - Implementazione di un controllo per parole multiple.
 - Implementazione di controllo di parola gia' scritta
 - Implementazione di controllo automatico di estensione di una parola gia' presente. Esempio:
@@ -50,4 +52,6 @@ Alcuni settaggi come il punteggio massimo, la dimensione delle caselle disegnate
                                        E
     ```
     Al momento per scrivere la parola 'mattone' e' necessario riscrivere la parola per intero, compreso quindi 'matto'
-
+## Problematiche note
+- Puo' capitare che all'inizio della partita un finestra di gioco appaia per meta' bianca in modo irreversibile. In tal caso riavviare
+- Le lettere per la mani dei giocatori sono generate in modo totalmente randomico senza nessun algoritmo di "pity", quindi capita che si abbiano in mano solo consonanti
