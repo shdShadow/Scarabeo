@@ -17,10 +17,10 @@ import xml.parserStringifier;
  */
 public class server {
     /**
-     * Il metodo principale del server
-     * 
-     * @param args
-     * @throws Exception
+      * Metodo principale per l'esecuzione del client.
+     *
+     * @param args gli argomenti passati da riga di comando
+     * @throws Exception eccezione generica che può essere lanciata durante l'esecuzione
      */
     public static void main(String[] args) throws Exception {
         sacchettoLettere sl = new sacchettoLettere();
