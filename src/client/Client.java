@@ -118,43 +118,59 @@ public class Client {
                  * Stringa che rappresenta la risposta ricevuta dal server.
                 */
                 String serverResponse = in.readLine();
+                // Controlla se la risposta inizia con '<'
                 if (serverResponse.charAt(0) == '<') {
+                    // Analizza il comando dalla risposta del server ed esegue azioni specifiche in base al comando
                     comando c = parserStringifier.parseCommando(serverResponse);
+                     // Se l'esecuzione del comando è 'update', aggiorna la matrice in DataManager
                     if (c.getExec().equals("update")) {
                         dm.UpdateMatrix(c.getL());
                     }
+                    // Se l'esecuzione del comando è 'hand', aggiunge alla mano del giocatore in DataManager
                     if (c.getExec().equals("hand")) {
                         dm.addToMano(c.getL());
                     }
+                    // Se la risposta è "stop", imposta lo stato del gioco come "stop"
                 } else if (serverResponse.equalsIgnoreCase("stop")) {
                     System.out.print("\033[H\033[2J");
                     dm.setStatus("stop");
-                } else if (serverResponse.equalsIgnoreCase("play")) {
+                }  
+                // Se la risposta è "play", imposta lo stato del gioco come "play"
+                else if (serverResponse.equalsIgnoreCase("play")) {
                     dm.setStatus("play");
-                } else if (serverResponse.equalsIgnoreCase("win") || serverResponse.equalsIgnoreCase("lose")) {
+                } 
+                //Se la risposta è "win" o "lose", imposta un messaggio di vittoria o sconfitta in base alla risposta
+                else if (serverResponse.equalsIgnoreCase("win") || serverResponse.equalsIgnoreCase("lose")) {
                     if (serverResponse.equalsIgnoreCase("win")) {
                         dm.setMex("HAI VINTO");
                     } else {
                         dm.setMex("HAI PERSO");
                     }
+                    // Imposta lo stato del gioco come "stop" e chiude il programma con un codice di uscita specifico
                     dm.setStatus("stop");
                     closeProgram(socket, in, out, 5);
                 } else if (serverResponse.equalsIgnoreCase("exit")) {
+                    // Se la risposta è "exit", chiude il programma con un codice di uscita specifico
                     closeProgram(socket, in, out, 1);
                 } else {
+                    // Se la risposta non corrisponde a nessuna delle condizioni precedenti, la elabora ulteriormente
                     String[] fields = serverResponse.split(";");
                     if (fields[0].equals("error")) {
                         //turno = true;
+                        // Se il primo campo è "error", imposta un messaggio di errore in DataManager e imposta lo stato del gioco come "play"
                         dm.setMex(fields);
                         dm.setStatus("play");
 
                     } else if (fields[0].equals("ok")) {
+                        // Se il primo campo è "ok", imposta i punti convertendo il secondo campo in un intero
                         dm.setPoints(Integer.parseInt(fields[1]));
                     }
                 }
             }
 
-        } catch (IOException e) {
+        } 
+         // Gestion dell'eccezione, se necessario
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
