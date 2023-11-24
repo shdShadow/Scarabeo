@@ -22,6 +22,6 @@ rectangle Server{
 UC1 <--> US1
 UC2 <--> US2
 
-UC3 --> UC4 : <<include>>
+
 
 @enduml
