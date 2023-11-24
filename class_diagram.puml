@@ -1,0 +1,44 @@
+@startuml class_diagram
+class letter{
+    -char character
+    -Integer value
+    -player player
+    -punto p
+    +boolean borrowed
+    +char getCharacter()
+    +player getPlayer()
+    +Integer getValue()
+    +punto getP()
+    +boolean getBorrowed()
+    +void setP(punto p)
+    +void setCharacter(char c)
+    +void setPlayer(player p)
+    +letter()
+    +letter(char _c, Integer _value, player _player, punto _p)
+    +letter(char _c, punto _p, player _player)
+    +{static} returnWord(ArrayList<letter> l)
+}
+class comando{
+    -String exec
+    -ArrayList<letter> l
+    +comando()
+    +comando(String _exec, ArrayList<letter> _l)
+    +ArrayList<letter> getL()
+    +String getExec()
+    +void setL(ArrayList<letter> l)
+    +void setExec(String exec)
+}
+
+class drawMatrice{
+    -Image offScreenImageDrawed
+    -Graphics offScreenGraphicsDrawed
+    -ArrayList<letter> buffer
+    -ArrayList<letter> mano
+    -String player_name
+    -String punteggio
+    -letter[][] gameMatrix
+    -punto cursorPosition
+    -String mex
+    -String status
+}
+@enduml

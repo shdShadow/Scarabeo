@@ -1,0 +1,176 @@
+@startuml
+
+/' diagram meta data start
+config=CallConfiguration;
+{
+  "rootMethod": "server.checkGiocata#checkParola(ArrayList\u003cletter\u003e,int)",
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": true,
+    "cutInterfaceStructures": true,
+    "cutDataStructures": true,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 3,
+    "backwardDepth": 3,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showMethodParametersTypes": false,
+    "showMethodParametersNames": false,
+    "showMethodReturnType": false,
+    "showPackageLevels": 2,
+    "showCallOrder": false,
+    "edgeMode": "MethodsOnly", // TypesOnly, MethodsOnly, TypesAndMethods, MethodsAndDirectTypeUsage
+    "showDetailedClassStructure": false
+  },
+  "rootClass": "server.checkGiocata",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="LR"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_114978452 { 
+   	label=utility
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_1312488 { 
+   	label=letter
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   letter114978452XXXreturnWord433626989[
+	label="+ returnWord()"
+	style=filled
+	fillcolor=white
+	tooltip="letter
+
+&#10;  Ritorna una stringa formata dalla concatenazione dei caratteri della lista di&#10;  oggetti lettera fornita&#10; &#10;  @param l la lista di oggetti lettera&#10;  @return una stringa rappresentante una parola generata dalla concatenazione&#10;  dei caratteri della lista di oggetti lettera fornita&#10; "
+	fontcolor=darkgreen
+];
+} 
+
+subgraph cluster_448905955 { 
+   	label=vocabolario
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   vocabolario114978452XXXcercaParola1808118735[
+	label="+ cercaParola()"
+	style=filled
+	fillcolor=white
+	tooltip="vocabolario
+
+null"
+	fontcolor=darkgreen
+];
+} 
+} 
+
+subgraph cluster_905826493 { 
+   	label=server
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_1202391237 { 
+   	label=checkGiocata
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   checkGiocata905826493XXXcheckParola1463209656[
+	label="+ checkParola()"
+	style=filled
+	fillcolor=white
+	tooltip="checkGiocata
+
+null"
+	penwidth=4
+	fontcolor=darkgreen
+];
+} 
+
+subgraph cluster_575308878 { 
+   	label=server
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   server905826493XXXmain1859653459[
+	label="+ main()"
+	style=filled
+	fillcolor=white
+	tooltip="server
+
+null"
+	fontcolor=darkgreen
+];
+} 
+} 
+
+'edges    
+checkGiocata905826493XXXcheckParola1463209656 -> letter114978452XXXreturnWord433626989;
+checkGiocata905826493XXXcheckParola1463209656 -> vocabolario114978452XXXcercaParola1808118735;
+server905826493XXXmain1859653459 -> checkGiocata905826493XXXcheckParola1463209656;
+    
+}
+@enduml
