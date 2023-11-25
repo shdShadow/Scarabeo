@@ -26,7 +26,8 @@ public class Client {
      * Metodo principale per l'esecuzione del client.
      *
      * @param args gli argomenti passati da riga di comando
-     * @throws Exception eccezione generica che può essere lanciata durante l'esecuzione
+     * @throws Exception eccezione generica che può essere lanciata durante
+     *                   l'esecuzione
      */
     public static void main(String[] args) throws Exception {
         // Definizione delle costanti per l'indirizzo IP del server e il numero di porta
@@ -41,7 +42,7 @@ public class Client {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
             // Scanner per leggere l'input dell'utente
-            //boolean turno = false;
+            // boolean turno = false;
 
             // Ottieni la mano del giocatore dal server e inizializza la matrice di gioco
             ArrayList<letter> mano = parserStringifier.parseCommando(in.readLine()).getL();
@@ -60,7 +61,8 @@ public class Client {
                 public void keyPressed(KeyEvent e) {
                     if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                         try {
-                            // Invia al server i dati aggiornati della matrice di gioco quando viene premuto il tasto "Invio"
+                            // Invia al server i dati aggiornati della matrice di gioco quando viene premuto
+                            // il tasto "Invio"
                             sendServer(out, dm);
                         } catch (ParserConfigurationException | TransformerException e1) {
                             e1.printStackTrace();
@@ -69,27 +71,29 @@ public class Client {
 
                     if (e.getKeyCode() == KeyEvent.VK_SHIFT && e.getKeyLocation() == KeyEvent.KEY_LOCATION_LEFT) {
                         try {
-                            // Invia al server un comando per cambiare la mano del giocatore quando viene premuto il tasto "Shift sinistro"
+                            // Invia al server un comando per cambiare la mano del giocatore quando viene
+                            // premuto il tasto "Shift sinistro"
                             sendServerSwitchHand(out, dm);
                         } catch (ParserConfigurationException | TransformerException e1) {
                             e1.printStackTrace();
                         }
                     }
                 }
-                
+
                 /**
-                * Metodo chiamato quando un tasto della tastiera viene rilasciato.
+                 * Metodo chiamato quando un tasto della tastiera viene rilasciato.
                  *
-                * @param e L'evento KeyEvent associato al rilascio di un tasto
-                */
+                 * @param e L'evento KeyEvent associato al rilascio di un tasto
+                 */
                 @Override
                 public void keyReleased(KeyEvent e) {
                 }
+
                 /**
-                * Metodo chiamato quando viene inserito un carattere dalla tastiera.
-                *
-                * @param e L'evento KeyEvent associato all'inserimento di un carattere
-                */
+                 * Metodo chiamato quando viene inserito un carattere dalla tastiera.
+                 *
+                 * @param e L'evento KeyEvent associato all'inserimento di un carattere
+                 */
                 @Override
                 public void keyTyped(KeyEvent e) {
                 }
@@ -97,10 +101,10 @@ public class Client {
             dm.addKeyListener(additionalKeyListener);
             dm.addWindowListener(new WindowAdapter() {
                 /**
-                * Metodo chiamato quando l'utente chiude la finestra del gioco.
-                *
-                * @param e L'evento WindowEvent associato alla chiusura della finestra
-                */
+                 * Metodo chiamato quando l'utente chiude la finestra del gioco.
+                 *
+                 * @param e L'evento WindowEvent associato alla chiusura della finestra
+                 */
                 @Override
                 public void windowClosing(WindowEvent e) {
                     try {
@@ -114,17 +118,19 @@ public class Client {
             while (true) {
                 /**
                  * Stringa che rappresenta la risposta ricevuta dal server.
-                */
+                 */
                 String serverResponse = in.readLine();
                 // Controlla se la risposta inizia con '<'
                 if (serverResponse.charAt(0) == '<') {
-                    // Analizza il comando dalla risposta del server ed esegue azioni specifiche in base al comando
+                    // Analizza il comando dalla risposta del server ed esegue azioni specifiche in
+                    // base al comando
                     comando c = parserStringifier.parseCommando(serverResponse);
-                     // Se l'esecuzione del comando è 'update', aggiorna la matrice in DataManager
+                    // Se l'esecuzione del comando è 'update', aggiorna la matrice in drawMatrice
                     if (c.getExec().equals("update")) {
                         dm.UpdateMatrix(c.getL());
                     }
-                    // Se l'esecuzione del comando è 'hand', aggiunge alla mano del giocatore in DataManager
+                    // Se l'esecuzione del comando è 'hand', aggiunge alla mano del giocatore in
+                    // DrawMatrice
                     if (c.getExec().equals("hand")) {
                         dm.addToMano(c.getL());
                     }
@@ -132,42 +138,48 @@ public class Client {
                 } else if (serverResponse.equalsIgnoreCase("stop")) {
                     System.out.print("\033[H\033[2J");
                     dm.setStatus("stop");
-                }  
+                }
                 // Se la risposta è "play", imposta lo stato del gioco come "play"
                 else if (serverResponse.equalsIgnoreCase("play")) {
                     dm.setStatus("play");
-                } 
-                //Se la risposta è "win" o "lose", imposta un messaggio di vittoria o sconfitta in base alla risposta
+                }
+                // Se la risposta è "win" o "lose", imposta un messaggio di vittoria o sconfitta
+                // in base alla risposta
                 else if (serverResponse.equalsIgnoreCase("win") || serverResponse.equalsIgnoreCase("lose")) {
                     if (serverResponse.equalsIgnoreCase("win")) {
                         dm.setMex("HAI VINTO");
                     } else {
                         dm.setMex("HAI PERSO");
                     }
-                    // Imposta lo stato del gioco come "stop" e chiude il programma con un codice di uscita specifico
+                    // Imposta lo stato del gioco come "stop" e chiude il programma con un codice di
+                    // uscita specifico
                     dm.setStatus("stop");
                     closeProgram(socket, in, out, 5);
                 } else if (serverResponse.equalsIgnoreCase("exit")) {
-                    // Se la risposta è "exit", chiude il programma con un codice di uscita specifico
-                    closeProgram(socket, in, out, 1);
+                    // Se la risposta è "exit", chiude il programma
+                    dm.setMex("L'avversario ha chiuso il gioco. La partita verra' conclusa");
+                    closeProgram(socket, in, out, 3);
                 } else {
-                    // Se la risposta non corrisponde a nessuna delle condizioni precedenti, la elabora ulteriormente
+                    // Se la risposta non corrisponde a nessuna delle condizioni precedenti, la
+                    // elabora ulteriormente
                     String[] fields = serverResponse.split(";");
                     if (fields[0].equals("error")) {
-                        //turno = true;
-                        // Se il primo campo è "error", imposta un messaggio di errore in DataManager e imposta lo stato del gioco come "play"
+                        // turno = true;
+                        // Se il primo campo è "error", imposta un messaggio di errore in DataManager e
+                        // imposta lo stato del gioco come "play"
                         dm.setMex(fields);
                         dm.setStatus("play");
 
                     } else if (fields[0].equals("ok")) {
-                        // Se il primo campo è "ok", imposta i punti convertendo il secondo campo in un intero
+                        // Se il primo campo è "ok", imposta i punti convertendo il secondo campo in un
+                        // intero
                         dm.setPoints(Integer.parseInt(fields[1]));
                     }
                 }
             }
 
-        } 
-         // Gestion dell'eccezione, se necessario
+        }
+        // Gestion dell'eccezione, se necessario
         catch (IOException e) {
             e.printStackTrace();
         }
@@ -178,9 +190,12 @@ public class Client {
      *
      * @param out L'oggetto PrintWriter per l'output verso il server
      * @param dm  L'oggetto drawMatrice che gestisce la matrice di gioco
-     * @throws TransformerConfigurationException in caso di configurazione errata del trasformatore XML
-     * @throws ParserConfigurationException      in caso di errore nella configurazione del parser XML
-     * @throws TransformerException             in caso di errore durante la trasformazione XML
+     * @throws TransformerConfigurationException in caso di configurazione errata
+     *                                           del trasformatore XML
+     * @throws ParserConfigurationException      in caso di errore nella
+     *                                           configurazione del parser XML
+     * @throws TransformerException              in caso di errore durante la
+     *                                           trasformazione XML
      */
     public static void sendServer(PrintWriter out, drawMatrice dm)
             throws TransformerConfigurationException, ParserConfigurationException, TransformerException {
@@ -191,14 +206,18 @@ public class Client {
         // Invia la stringa XML contenente il comando al server
         out.println(s);
     }
+
     /**
      * Invia al server una richiesta di cambio mano durante il gioco.
      *
      * @param out L'oggetto PrintWriter per l'output verso il server
      * @param dm  L'oggetto drawMatrice che gestisce la matrice di gioco
-     * @throws TransformerConfigurationException in caso di configurazione errata del trasformatore XML
-     * @throws ParserConfigurationException      in caso di errore nella configurazione del parser XML
-     * @throws TransformerException             in caso di errore durante la trasformazione XML
+     * @throws TransformerConfigurationException in caso di configurazione errata
+     *                                           del trasformatore XML
+     * @throws ParserConfigurationException      in caso di errore nella
+     *                                           configurazione del parser XML
+     * @throws TransformerException              in caso di errore durante la
+     *                                           trasformazione XML
      */
     public static void sendServerSwitchHand(PrintWriter out, drawMatrice dm)
             throws TransformerConfigurationException, ParserConfigurationException, TransformerException {
@@ -211,15 +230,20 @@ public class Client {
         // Invia la stringa XML contenente il comando al server
         out.println(s);
     }
+
     /**
-     * Chiude correttamente il programma, terminando la connessione con il server e i flussi di input/output.
+     * Chiude correttamente il programma, terminando la connessione con il server e
+     * i flussi di input/output.
      *
      * @param socket Il socket per la connessione con il server
      * @param in     Il BufferedReader per la lettura dall'input del server
      * @param out    Il PrintWriter per l'output verso il server
-     * @param delay  Il ritardo in secondi prima di terminare completamente il programma
-     * @throws InterruptedException in caso di interruzione del thread durante la pausa
-     * @throws IOException          in caso di errore di input/output durante la chiusura
+     * @param delay  Il ritardo in secondi prima di terminare completamente il
+     *               programma
+     * @throws InterruptedException in caso di interruzione del thread durante la
+     *                              pausa
+     * @throws IOException          in caso di errore di input/output durante la
+     *                              chiusura
      */
     public static void closeProgram(Socket socket, BufferedReader in, PrintWriter out, int delay)
             throws InterruptedException, IOException {
@@ -231,7 +255,8 @@ public class Client {
     }
 
     /**
-     * Chiude correttamente il programma inviando un comando di uscita al server e terminando la connessione.
+     * Chiude correttamente il programma inviando un comando di uscita al server e
+     * terminando la connessione.
      *
      * @param socket Il socket per la connessione con il server
      * @param in     Il BufferedReader per la lettura dall'input del server
